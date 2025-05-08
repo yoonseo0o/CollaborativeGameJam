@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638823011309756843
-    m_Hash: 2197798251
+      ticks: 638823046536824241
+    m_Hash: 839892357
   m_LockFileStatus:
     m_FilePath: D:/dbstj/gitHub/CollaborativeGameJam/collaborative/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638823011310405056
-    m_Hash: 117238308
+      ticks: 638823046537298806
+    m_Hash: 1205232652
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -22,6 +22,119 @@ m_LocalPackages:
 m_ProjectPath: D:/dbstj/gitHub/CollaborativeGameJam/collaborative/Packages
 m_EditorVersion: 6000.0.41f1 (46e447368a18)
 m_ResolvedPackages:
+- packageId: com.unity.ai.navigation@2.0.7
+  testable: 0
+  isDirectDependency: 1
+  version: 2.0.7
+  source: 1
+  resolvedPath: D:\dbstj\gitHub\CollaborativeGameJam\collaborative\Library\PackageCache\com.unity.ai.navigation@39ae74efb85f
+  assetPath: Packages/com.unity.ai.navigation
+  name: com.unity.ai.navigation
+  displayName: AI Navigation
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: The AI Navigation package contains high-level components that allow
+    you to use navmeshes to incorporate navigation and pathfinding in your game.
+    With this package installed you can build and use navmeshes at runtime and at
+    edit time, create dynamic obstacles, and use links to allow specific actions
+    (like jumping) as your characters navigate between navmeshes.
+  errors: []
+  versions:
+    all:
+    - 1.0.0-exp.2
+    - 1.0.0-exp.3
+    - 1.0.0-exp.4
+    - 1.1.0-pre.1
+    - 1.1.0-pre.2
+    - 1.1.1
+    - 1.1.3
+    - 1.1.4
+    - 1.1.5
+    - 1.1.6
+    - 2.0.0-pre.3
+    - 2.0.0-pre.4
+    - 2.0.0
+    - 2.0.3
+    - 2.0.4
+    - 2.0.5
+    - 2.0.6
+    - 2.0.7
+    compatible:
+    - 2.0.6
+    - 2.0.7
+    recommended: 2.0.7
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.ai
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.ai
+    version: 1.0.0
+  keywords:
+  - carving
+  - mesh
+  - navigation
+  - navmesh
+  - NavMesh
+  - navmesh agent
+  - navmesh link
+  - navmeshlink
+  - navmesh modifier
+  - navmeshmodifier
+  - navmesh modifier volume
+  - navmeshmodifiervolume
+  - navmesh obstacle
+  - navmesh surface
+  - navmeshsurface
+  - offmesh link
+  - off-mesh link
+  - pathfinding
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638797994194330000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.ai.navigation.git
+    revision: f9335c44bc8104d2271e2a5c17c1829670fd7ca6
+    path: 
+  unityLifecycle:
+    version: 2.0.6
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Changed\n* The minimum supported editor version
+    is Unity 6 LTS. Compatibility with Unity 2023.2 is no longer guaranteed going
+    forward.\n\n### Fixed\n* Baking NavMeshSurface no longer fails when the game
+    object name has invalid file name characters."}'
+  assetStore:
+    productId: 
+  fingerprint: 39ae74efb85f9b44dc389774fc59c2ce4a8aa3b6
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.6
+    minimumUnityVersion: 6000.0.0a1
 - packageId: com.unity.collab-proxy@2.8.2
   testable: 0
   isDirectDependency: 1
