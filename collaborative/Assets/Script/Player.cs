@@ -3,20 +3,26 @@ using UnityEditor.AI;
 using UnityEngine.InputSystem;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 using UnityEngine.Windows;
-using System.Collections; 
-public class Player : MonoBehaviour
+using System.Collections;
+public interface Entity 
 {
-    private float hp;
+    public abstract void Attacked(int damageAmount);
+
+    public abstract void Dead();
+}
+public class Player : MonoBehaviour, Entity
+{
+    private int maxHp=10;
+    private int hp=10;
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
-     
+
     private InputAction moveAction;
     private InputAction lookAction;
     private Coroutine co;
     private Vector3 moveInput;
-    private float maxSightAngle =60f;
-    private float sensitivity=10;
-     
+    private float maxSightAngle = 60f;
+    private float sensitivity = 10; 
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
@@ -95,17 +101,32 @@ public class Player : MonoBehaviour
     #endregion
 
     private void Attack()
-    {
+    { 
 
     }
-    public void Attacked(float damageAmount)
+    void Entity.Attacked(int damageAmount)
     {
-        if (IsDead())
-            { return; }
+        Debug.Log("아야 : 플레이어");
         hp-=damageAmount;
+        if (hp <= 0)
+            ((Entity)this).Dead();
     }
-    private bool IsDead()
+    void Entity.Dead()
     {
-        return hp <= 0;
+        GameManager.Instance.GameOver("player");
     }
+    public void LanternHeal()
+    {
+        ModifyHealth(1);
+    }
+    public void ModifyHealth(int amount=1)
+    {
+        Debug.Log("call modifyHealth");
+        hp += amount;
+        if (hp > maxHp)
+            hp = maxHp;
+        if (hp <= 0)
+            ((Entity)this).Dead();
+    } 
+
 }
