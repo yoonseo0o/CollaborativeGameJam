@@ -407,6 +407,7 @@
 "Assets/Script/Interactions/Interaction.cs"
 "Assets/Script/Interactions/Lantern.cs"
 "Assets/Script/Manager/GameManager.cs"
+"Assets/Script/Manager/PlayerInputSystem.cs"
 "Assets/Script/Manager/PureSystem.cs"
 "Assets/Script/Manager/StructureSystem.cs"
 "Assets/Script/Manager/UIManager.cs"

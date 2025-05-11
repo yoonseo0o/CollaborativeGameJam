@@ -10,57 +10,42 @@ using UnityEditor.PackageManager;
 
 public class Player : MonoBehaviour, Entity
 {
+    [Header("property")]
     private int maxHp=10;
     private int hp=10;
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
     private int damageAmount = 5;
-
-    private InputAction moveAction;
-    private InputAction lookAction;
-    private InputAction interactAction;
+     
     private Coroutine co;
     private Vector3 moveInput;
     private float maxSightAngle = 60f;
     private float sensitivity = 10;
 
+
+    [SerializeField] private PlayerInputSystem inputSystem;
+
+    /*[Header("Look")]
+    PlayerInteraction interaction;*/
     [Header("Attack")]
     [SerializeField] private Flashlight flash;
-
-    [Header("Look")]
-    PlayerInteraction interaction;
     private void Awake()
     {
-        interaction = GetComponent< PlayerInteraction>();
-
-        moveAction = InputSystem.actions.FindAction("Move");
-        lookAction = InputSystem.actions.FindAction("Look"); 
-        interactAction = InputSystem.actions.FindAction("Interact"); 
-        moveAction.performed += OnMovePerformed;
-        moveAction.performed += interaction.GetLookTarget;
-        moveAction.canceled += OnMoveCanceled;
-        lookAction.performed += OnRotatePerformed;
-        lookAction.performed += interaction.GetLookTarget;
-        interactAction.performed += OnInteracted;
     }
     private void Start()
-    {
+    { 
+        inputSystem.moveAction.performed += OnMovePerformed; 
+        inputSystem.moveAction.canceled += OnMoveCanceled;
+        inputSystem.lookAction.performed += OnRotatePerformed; 
         flash.Init(damageAmount);
-        flash.TurnOn(true);
+        //flash.TurnOn(true);
     }
     private void OnDisable()
     {
-        moveAction.performed -= OnMovePerformed;
-        moveAction.performed -= interaction.GetLookTarget;
-        moveAction.canceled -= OnMoveCanceled;
-        lookAction.performed -= OnRotatePerformed;
-        lookAction.performed -= interaction.GetLookTarget;
-        interactAction.performed -= OnInteracted;
-    }
-    /*private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"triggerEnter - {other.gameObject.name}");
-    }*/
+        inputSystem.moveAction.performed -= OnMovePerformed; 
+        inputSystem.moveAction.canceled -= OnMoveCanceled;
+        inputSystem.lookAction.performed -= OnRotatePerformed; 
+    } 
     #region move&look
     private float NormalizeAngle(float angle)
     {
@@ -86,8 +71,7 @@ public class Player : MonoBehaviour, Entity
         {
             Camera.main.transform.Rotate(cameraX, 0, 0);
         }
-        #endregion
-
+        #endregion 
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
@@ -107,10 +91,6 @@ public class Player : MonoBehaviour, Entity
             co = null;
         }
 
-    }
-    private void OnInteracted(InputAction.CallbackContext context)
-    { 
-        interaction.OnInteract();
     }
     private IEnumerator move ()
     {

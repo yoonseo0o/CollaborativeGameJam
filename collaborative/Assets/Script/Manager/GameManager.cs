@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager;
     public PureSystem PureSystem;
     public StructureSystem StructureSystem;
+    public PlayerInputSystem PlayerInputSystem;
 
     [Header("")]
     public Transform lanternTrf;

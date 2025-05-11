@@ -10,7 +10,7 @@ public class PlayerInteraction : MonoBehaviour
     public void GetLookTarget(InputAction.CallbackContext context)
     {
         Vector3 direction = Camera.main.transform.forward;
-        Debug.DrawRay(transform.position, direction * maxDistance);
+        //Debug.DrawRay(transform.position, direction * maxDistance);
         if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, maxDistance, interactionLayer))
         {
 
