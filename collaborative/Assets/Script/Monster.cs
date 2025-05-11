@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
 public class Monster : MonoBehaviour, Entity
 {
-    [Header("property")]
-    private int hp=10;//?
-    private int damageAmount=1;
+    [Header("instance property")]
+    [SerializeField] private int hp=10;//?
     [SerializeField] private float speed;
-    private float attackCoolingTime=2f;
-    private float attackDistance=1f;
-    NavMeshAgent agent;
-    [SerializeField] private Transform target;
+    [SerializeField] private int damageAmount=1;
+    [SerializeField] private int pureValue=2;
+    [Header("attack property")]
+    [SerializeField] private float attackCoolingTime=2f;
+    [SerializeField] private float attackDistance=1f;
 
+    NavMeshAgent agent;
+    [Header("target")]
+    [SerializeField] private Transform target;
     private List<Transform> structuresInRange;
     private Transform lanternInRange;
     private Transform playerInRange;
@@ -76,7 +80,7 @@ public class Monster : MonoBehaviour, Entity
             TargetSelection();
         }
         else if (other.CompareTag("Structure"))
-        {
+        { 
             structuresInRange.Remove(other.transform);
             TargetSelection();
         }
@@ -89,6 +93,7 @@ public class Monster : MonoBehaviour, Entity
     }
     void Entity.Dead()
     {
+        GameManager.Instance.PureSystem.GetPure(pureValue);
         Destroy(gameObject);
     }
     private void TargetSelection()
@@ -97,11 +102,21 @@ public class Monster : MonoBehaviour, Entity
         else if (playerInRange != null) { target = playerInRange; }
         else if (structuresInRange.Count > 0)
         { 
+            if(structuresInRange[0]==null)
+            {
+                target = GameManager.Instance.lanternTrf;
+                return;
+            }
             Transform minDistanceStr = structuresInRange[0];
             float minSqrDistance = (transform.position - minDistanceStr.position).sqrMagnitude;
 
             foreach (var str in structuresInRange)
             {
+                if (str == null)
+                {
+                    structuresInRange.Remove(str);
+                    continue;
+                }
                 float sqrDistance = (transform.position - str.position).sqrMagnitude;
                 if (sqrDistance < minSqrDistance)
                 {
@@ -115,11 +130,15 @@ public class Monster : MonoBehaviour, Entity
         else
         {
             target = GameManager.Instance.lanternTrf;
-        } 
+        }
     }
     private void moveToTarget()
     {
-        if (agent.destination != target.transform.position)
+        if (target == null)
+        {
+            agent.SetDestination(transform.position);
+        }
+        else if (agent.destination != target.transform.position)
         { 
             agent.SetDestination(target.transform.position);
         }
@@ -134,8 +153,8 @@ public class Monster : MonoBehaviour, Entity
         { 
             if (target == null)
             {
-                Debug.LogError($"{name}의 target이 null임");
-                stanbyAttackCo = null;
+                stanbyAttackCo = null; 
+                TargetSelection();
                 yield break;
             }
             // 타겟이랑 거리 체크
@@ -155,7 +174,11 @@ public class Monster : MonoBehaviour, Entity
     }
     private void Attack()
     {
-        if (target.CompareTag("Lantern")|| target.CompareTag("Player"))
+        if(target==null)
+        { 
+            TargetSelection();
+        }
+        if (target.GetComponent<Entity>()!=null)
             target.GetComponent<Entity>().Attacked(damageAmount);
     }  
 }
