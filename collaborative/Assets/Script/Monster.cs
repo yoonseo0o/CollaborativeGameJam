@@ -25,15 +25,21 @@ public class Monster : MonoBehaviour, Entity
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
-        if (target == null)
-            target = GameObject.Find("Player").transform;
         structuresInRange = new List<Transform>();
+    }
+    void Start()
+    {
+        if (target == null)
+            target = GameManager.Instance.lanternTrf;
+
         TargetSelection();
         stanbyAttackCo=StartCoroutine(StandbyAttack());
+
     }
     void OnDestroy()
     {
-        StopCoroutine(stanbyAttackCo);
+        if(stanbyAttackCo != null)
+            StopCoroutine(stanbyAttackCo);
     }
     void Update()
     {
@@ -42,8 +48,7 @@ public class Monster : MonoBehaviour, Entity
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Lantern"))
-        {
-            Debug.Log("lentern");
+        { 
             lanternInRange = other.transform;
             TargetSelection();
         }
@@ -108,7 +113,7 @@ public class Monster : MonoBehaviour, Entity
             target = minDistanceStr;
         }
         else
-        { 
+        {
             target = GameManager.Instance.lanternTrf;
         } 
     }
@@ -130,6 +135,7 @@ public class Monster : MonoBehaviour, Entity
             if (target == null)
             {
                 Debug.LogError($"{name}의 target이 null임");
+                stanbyAttackCo = null;
                 yield break;
             }
             // 타겟이랑 거리 체크

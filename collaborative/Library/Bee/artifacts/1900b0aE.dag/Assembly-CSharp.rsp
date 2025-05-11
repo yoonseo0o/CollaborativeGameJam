@@ -402,10 +402,15 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.41f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.41f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.41f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Assets/Script/Entity.cs"
+"Assets/Script/Flashlight.cs"
 "Assets/Script/GameManager.cs"
+"Assets/Script/Interaction.cs"
 "Assets/Script/Lantern.cs"
 "Assets/Script/Monster.cs"
 "Assets/Script/Player.cs"
+"Assets/Script/PlayerInteractive.cs"
+"Assets/Script/UIManager.cs"
 -langversion:9.0
 /deterministic
 /optimize+

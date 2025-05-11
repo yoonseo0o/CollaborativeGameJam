@@ -1,17 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class Lantern : MonoBehaviour, Entity
+public class Lantern : MonoBehaviour, Entity, Interaction
 {
     private int hp=25;
     private int range;
     private int intensity;
     [SerializeField] private int playerHealTime;
+    [SerializeField] private GameObject canvas;
 
-    void Entity.Attacked(int damageAmount)
+    void Awake()
     {
-        Debug.Log("아야 : 렌턴");
+        canvas.SetActive(false);
+    }
+    void Entity.Attacked(int damageAmount)
+    { 
         hp -= damageAmount;
+        GameManager.Instance.UIManager.UpdateLanternHP(hp);
         if (hp <= 0)
         {
             ((Entity)this).Dead();
@@ -21,9 +26,10 @@ public class Lantern : MonoBehaviour, Entity
     {
         GameManager.Instance.GameOver("lantern");
     }
-    public void interaction()
+    void Interaction.interaction()
     {
         // 강화창 출력
+        canvas.SetActive(true);
     }
     private void RangeStrengthen()
     {
@@ -37,7 +43,7 @@ public class Lantern : MonoBehaviour, Entity
     { 
         if (other.CompareTag("Player"))
         {
-            Debug.Log("player enter");
+            //Debug.Log("player enter");
             other.GetComponent<Player>().InvokeRepeating("LanternHeal", playerHealTime, playerHealTime);
         }
     }
@@ -45,7 +51,7 @@ public class Lantern : MonoBehaviour, Entity
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("player exit");
+            //Debug.Log("player exit");
             other.GetComponent<Player>().CancelInvoke("LanternHeal");
         }
     }

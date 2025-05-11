@@ -8,7 +8,14 @@ public class GameManager : MonoBehaviour
         get { return instance; }
         private set { instance = value; }
     }
+    [Header("Manager")]
+    public UIManager UIManager;
+
+    [Header("")]
     public Transform lanternTrf;
+
+    public int playerMaxHp { get; private set; }
+    public int lanternMaxHp { get; private set; }
     void Awake()
     {
         if (instance != null)
@@ -18,7 +25,12 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
+        playerMaxHp = 10;
+        lanternMaxHp = 25;
     }
     public void GameOver(string str)
     {

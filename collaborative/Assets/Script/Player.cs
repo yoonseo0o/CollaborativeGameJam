@@ -4,42 +4,63 @@ using UnityEngine.InputSystem;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 using UnityEngine.Windows;
 using System.Collections;
-public interface Entity 
-{
-    public abstract void Attacked(int damageAmount);
+using static UnityEngine.UI.Image;
+using System.Drawing;
+using UnityEditor.PackageManager;
 
-    public abstract void Dead();
-}
 public class Player : MonoBehaviour, Entity
 {
     private int maxHp=10;
     private int hp=10;
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
+    private int damageAmount = 5;
 
     private InputAction moveAction;
     private InputAction lookAction;
+    private InputAction interactAction;
     private Coroutine co;
     private Vector3 moveInput;
     private float maxSightAngle = 60f;
-    private float sensitivity = 10; 
+    private float sensitivity = 10;
+
+    [Header("Attack")]
+    [SerializeField] private Flashlight flash;
+
+    [Header("Look")]
+    PlayerInteraction interaction;
     private void Awake()
     {
+        interaction = GetComponent< PlayerInteraction>();
+
         moveAction = InputSystem.actions.FindAction("Move");
-        lookAction = InputSystem.actions.FindAction("Look");
+        lookAction = InputSystem.actions.FindAction("Look"); 
+        interactAction = InputSystem.actions.FindAction("Interact"); 
         moveAction.performed += OnMovePerformed;
+        moveAction.performed += interaction.GetLookTarget;
         moveAction.canceled += OnMoveCanceled;
-        lookAction.performed += OnLookPerformed; 
+        lookAction.performed += OnRotatePerformed;
+        lookAction.performed += interaction.GetLookTarget;
+        interactAction.performed += OnInteracted;
+    }
+    private void Start()
+    {
+        flash.Init(damageAmount);
+        flash.TurnOn(true);
     }
     private void OnDisable()
     {
         moveAction.performed -= OnMovePerformed;
+        moveAction.performed -= interaction.GetLookTarget;
         moveAction.canceled -= OnMoveCanceled;
+        lookAction.performed -= OnRotatePerformed;
+        lookAction.performed -= interaction.GetLookTarget;
+        interactAction.performed -= OnInteracted;
     }
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         Debug.Log($"triggerEnter - {other.gameObject.name}");
-    }
+    }*/
     #region move&look
     private float NormalizeAngle(float angle)
     {
@@ -47,8 +68,9 @@ public class Player : MonoBehaviour, Entity
         if (angle > 180f) angle -= 360f;
         return angle;
     }
-    private void OnLookPerformed(InputAction.CallbackContext context)
+    private void OnRotatePerformed(InputAction.CallbackContext context)
     {
+        #region 시야회전
         Vector2 mouseDelta = context.ReadValue<Vector2>(); 
 
         // 플레이어 y축 회전
@@ -64,6 +86,8 @@ public class Player : MonoBehaviour, Entity
         {
             Camera.main.transform.Rotate(cameraX, 0, 0);
         }
+        #endregion
+
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
@@ -84,6 +108,10 @@ public class Player : MonoBehaviour, Entity
         }
 
     }
+    private void OnInteracted(InputAction.CallbackContext context)
+    { 
+        interaction.OnInteract();
+    }
     private IEnumerator move ()
     {
         while (true)
@@ -100,16 +128,17 @@ public class Player : MonoBehaviour, Entity
     }
     #endregion
 
-    private void Attack()
-    { 
 
-    }
+    // 이게 필요없는거 같음. 
+    // 상호작용 하면서 플레시 드니까 그때 같이 해주는게 맞고
+    // 플레이어자체에는  attack이 없어야할듯
+    /*private void Attack()
+    {
+        flash.TurnOn(true);
+    }*/
     void Entity.Attacked(int damageAmount)
     {
-        Debug.Log("아야 : 플레이어");
-        hp-=damageAmount;
-        if (hp <= 0)
-            ((Entity)this).Dead();
+        ModifyHealth(-damageAmount);
     }
     void Entity.Dead()
     {
@@ -120,9 +149,9 @@ public class Player : MonoBehaviour, Entity
         ModifyHealth(1);
     }
     public void ModifyHealth(int amount=1)
-    {
-        Debug.Log("call modifyHealth");
+    { 
         hp += amount;
+        GameManager.Instance.UIManager.UpdatePlayerHP (hp);
         if (hp > maxHp)
             hp = maxHp;
         if (hp <= 0)
