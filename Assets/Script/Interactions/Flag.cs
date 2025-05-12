@@ -8,9 +8,14 @@ public class Flag : MonoBehaviour, Interaction
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        remainFlagCount++;
         IsActive = false;
-        light.SetActive(true);
+        light.SetActive(true); 
+    }
+
+    void OnEnable()
+    {
+        remainFlagCount++;
+
     }
     void Interaction.interaction()
     {

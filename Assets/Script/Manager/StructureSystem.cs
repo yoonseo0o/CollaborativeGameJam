@@ -90,8 +90,7 @@ public class StructureSystem : MonoBehaviour
         return true;
     }
     public void CheckBuyability()
-    {
-        Debug.Log("check pure");
+    { 
         if (selectObj == null) return;
         // 선택 구조물이 구매 가능 상태라면
         if(StructureList[SelectIndex].GetComponent<Structure>().pureCost

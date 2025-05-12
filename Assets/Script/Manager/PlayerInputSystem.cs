@@ -54,15 +54,14 @@ public class PlayerInputSystem : MonoBehaviour
         if (keyControl != null)
         {
             activeAbility = ActiveAbility.none;
-            flash.TurnOn(false);
             GameManager.Instance.StructureSystem.DeselectStructure();
             if (keyControl.keyCode == Key.Digit1)
             { 
                 activeAbility = ActiveAbility.flash;
-                flash.TurnOn(true);
             }
             else if (keyControl.keyCode == Key.Digit2)
             { 
+                flash.TurnOn(false);
                 activeAbility = ActiveAbility.structure;
                 GameManager.Instance.StructureSystem.SelectStructure();
             }
@@ -71,10 +70,15 @@ public class PlayerInputSystem : MonoBehaviour
         {
             if (buttonControl.name == "leftButton"  )
             {
-                //Debug.Log("")
-                if(activeAbility == ActiveAbility.structure) {
-                if (GameManager.Instance.StructureSystem.DeployStructure())
-                    activeAbility = ActiveAbility.none;
+                if (activeAbility == ActiveAbility.flash)
+                {
+                    flash.Turn();
+
+                }
+                if (activeAbility == ActiveAbility.structure)
+                {
+                    if (GameManager.Instance.StructureSystem.DeployStructure())
+                        activeAbility = ActiveAbility.none;
                 }
             }
         }

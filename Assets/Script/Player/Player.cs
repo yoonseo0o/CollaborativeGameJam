@@ -26,9 +26,9 @@ public class Player : MonoBehaviour, Entity
     [SerializeField] private PlayerInputSystem inputSystem;
 
     /*[Header("Look")]
-    PlayerInteraction interaction;*/
+    PlayerInteraction interaction;
     [Header("Attack")]
-    [SerializeField] private Flashlight flash;
+    [SerializeField] private NewFlashlight flash;*/
     private void Awake()
     {
     }
@@ -36,8 +36,7 @@ public class Player : MonoBehaviour, Entity
     { 
         inputSystem.moveAction.performed += OnMovePerformed; 
         inputSystem.moveAction.canceled += OnMoveCanceled;
-        inputSystem.lookAction.performed += OnRotatePerformed; 
-        flash.Init(damageAmount);
+        inputSystem.lookAction.performed += OnRotatePerformed;  
         //flash.TurnOn(true);
     }
     private void OnDisable()
@@ -116,22 +115,27 @@ public class Player : MonoBehaviour, Entity
     {
         flash.TurnOn(true);
     }*/
-    void Entity.Attacked(int damageAmount)
+    bool Entity.Attacked(int damageAmount)
     {
-        ModifyHealth(-damageAmount);
+        return ModifyHealth(-damageAmount);
     }
     void Entity.Dead()
     {
         GameManager.Instance.GameOver("player");
     } 
-    public void ModifyHealth(int amount=1)
+    public bool ModifyHealth(int amount=1)
     { 
         hp += amount;
         GameManager.Instance.UIManager.UpdatePlayerHP (hp);
         if (hp > maxHp)
             hp = maxHp;
         if (hp <= 0)
+        {
             ((Entity)this).Dead();
+            return true;
+        }
+        else 
+            return false;
     }
     public void ModifyHealth( )
     {

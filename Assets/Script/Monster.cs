@@ -85,11 +85,15 @@ public class Monster : MonoBehaviour, Entity
             TargetSelection();
         }
     }
-    void Entity.Attacked(int damageAmount)
+    bool Entity.Attacked(int damageAmount)
     { 
         hp -= damageAmount;
         if (hp<=0)
+        {
             ((Entity)this).Dead();
+            return true;
+        }
+        else { return false; }
     }
     void Entity.Dead()
     {

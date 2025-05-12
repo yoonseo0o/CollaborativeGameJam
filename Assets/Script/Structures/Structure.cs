@@ -11,11 +11,16 @@ public abstract class Structure : MonoBehaviour, Entity
     public string description;
     //public Sprite img;
     public abstract void Ability();
-    void Entity.Attacked(int damageAmount)
+    bool Entity.Attacked(int damageAmount)
     {
         Debug.Log($"공격받는 중 {damageAmount}");
         hp -=damageAmount;
-        if(hp < 0) ((Entity)this).Dead();
+        if (hp < 0) { 
+            ((Entity)this).Dead();
+            return true;
+        }
+        else 
+            return false;
     }
     void Entity.Dead() 
     {

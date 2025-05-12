@@ -16,14 +16,17 @@ public class Lantern : MonoBehaviour, Entity, Interaction
         canvas.SetActive(false);
         range = rangeTrf.localScale.x; 
     }
-    void Entity.Attacked(int damageAmount)
+    bool Entity.Attacked(int damageAmount)
     { 
         hp -= damageAmount;
         GameManager.Instance.UIManager.UpdateLanternHP(hp);
         if (hp <= 0)
         {
             ((Entity)this).Dead();
+            return true;
         }
+        else 
+            return false;
     }
     void Entity.Dead()
     {

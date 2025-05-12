@@ -1,60 +1,83 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
+using UnityEngine.InputSystem.HID;
 
 public class Flashlight : MonoBehaviour
 {
-    public bool IsActive;
-    [SerializeField] private float spotRange;
-    [SerializeField] private float spotAngle;
-
-    [SerializeField] private int maxDamageAmount; 
-    [SerializeField] private float attackCoolingTime;
-
-    private int monsterLayer;
-
+    [Header("property")]
+    [SerializeField] private bool IsOn;
+    [Header(" ")]
+    [SerializeField] private float brightness;
+    [SerializeField] private float distance;  
+    //[SerializeField] private float range;  
+    [Header(" ")] 
+    [SerializeField] private float attackDelay=0.2f;
+    private List<Transform> monsters;  
     private void Awake()
     {
-        IsActive = false;
-        monsterLayer = 1<<6; 
+        IsOn = gameObject.activeSelf;
+        distance = Vector3.Distance(Camera.main.transform.position,
+            transform.GetChild(0).position);
+        monsters = new List<Transform>();
+        //range = transform.localScale.x/2;
     }
-    public void Init(int damageAmount, float coolTime=0.2f )
-    {
-        this.maxDamageAmount = damageAmount;
-        this.attackCoolingTime = coolTime;
-    }
-    private void Attack()
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, spotRange, monsterLayer);
 
-        foreach (var hit in hits)
+    public void Turn( )
+    {
+        IsOn = !IsOn;
+        if (IsOn)
         {
-            Vector3 directionToTarget = (hit.transform.position - transform.position).normalized;
-            float angle = Vector3.Angle(transform.forward, directionToTarget);
-
-            if (angle < spotAngle / 2f)
-            { 
-                float distanceToTarget = Vector3.Distance(transform.position, hit.transform.position);
-                float ratio = Mathf.Clamp01((spotRange - distanceToTarget) / spotRange);
-                int thisDamageAmount = Mathf.RoundToInt(ratio * maxDamageAmount);
-
-
-                //Debug.Log($"{Mathf.Clamp01((spotRange - distanceToTarget) / spotRange)}*{maxDamageAmount} = {thisDamageAmount}");
-                hit.GetComponent<Entity>().Attacked(thisDamageAmount);
-            }
-        }
-    }
-    public void TurnOn(bool IsOn)
-    {
-        IsActive = IsOn;
-        if (IsActive)
-        {
-            InvokeRepeating("Attack", attackCoolingTime, attackCoolingTime);
-
+            gameObject.SetActive(true);
+            InvokeRepeating("Attack", attackDelay, attackDelay);
         }
         else
         {
             CancelInvoke("Attack");
+            gameObject.SetActive(false);
         }
+    }
+    public void TurnOn(bool b)
+    {
+        IsOn = b;
+        if (b)
+        {
+            gameObject.SetActive(true);
+            InvokeRepeating("Attack", attackDelay, attackDelay);
+        }
+        else
+        {
+            CancelInvoke("Attack");
+            gameObject.SetActive(false);
+        }
+    }
+    private void Attack()
+    {
+        if (!IsOn)
+            return;
+        Vector3 thisPos = Camera.main.transform.position;
+            //Debug.Log(monsters.Count);
+            List<Transform> deadMonsters = new List<Transform>();
+        foreach (var m in monsters)
+        { 
+            float distanceToTarget = Vector3.Distance(transform.position, m.transform.position);
+            float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
+            int damageAmount = Mathf.RoundToInt(ratio * brightness);
 
+            Debug.Log($"{ratio} * {brightness} = {damageAmount}");
+            // 공격 후, 죽었으면 삭제
+            if (m.GetComponent<Entity>().Attacked(damageAmount))
+                deadMonsters.Add(m);
+        }
+        foreach (var m in deadMonsters)
+            monsters.Remove(m); 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        monsters.Add(other.transform);
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        monsters.Remove(other.transform);
     }
 }
