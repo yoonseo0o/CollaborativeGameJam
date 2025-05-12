@@ -4955,6 +4955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee65d0864cd2c9d4bace76861181f5ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pureCost: 2
-  hp: 5
-  lightEffect: {fileID: 3450607768266965212}
+  pureCost: 3
+  hp: 7
+  name: "\uAD6C\uC870\uBB3C 2"
+  description: "\uADF8\uB7ED\uC800\uB7ED\uD55C \uCCB4\uB825"

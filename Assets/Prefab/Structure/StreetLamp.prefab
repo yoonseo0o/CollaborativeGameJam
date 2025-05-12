@@ -4938,7 +4938,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
@@ -4957,4 +4957,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pureCost: 2
   hp: 5
-  lightEffect: {fileID: 3450607768266965212}
+  name: "\uAC00\uB85C\uB4F1"
+  description: "\uC8FC\uBCC0\uC744 \uC9C0\uC18D\uC801\uC73C\uB85C \uBC1D\uD600\uC900\uB2E4."

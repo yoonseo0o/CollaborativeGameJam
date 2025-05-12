@@ -3,9 +3,14 @@ using UnityEngine;
 public class StreetLamp : Structure
 {
     [Header("ability")]
-    [SerializeField] private ParticleSystem lightEffect;
+    private ParticleSystem lightEffect;
+    private void Awake()
+    {
+        lightEffect = GetComponent<ParticleSystem>();
+    }
     public override void Ability()
     {
-        lightEffect.Play();
+        if( lightEffect != null ) { 
+        lightEffect.Play();}
     }
 }

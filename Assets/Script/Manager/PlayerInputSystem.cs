@@ -19,10 +19,10 @@ public class PlayerInputSystem : MonoBehaviour
     {
         interaction = GetComponent<PlayerInteraction>();
 
-        moveAction = InputSystem.actions.FindAction("Move"); 
-        lookAction = InputSystem.actions.FindAction("Look");
-        interactAction = InputSystem.actions.FindAction("Interact");
-        abilityAction = InputSystem.actions.FindAction("Ability");
+        moveAction = InputSystem.actions.FindAction("Move"); moveAction.Enable();
+        lookAction = InputSystem.actions.FindAction("Look"); lookAction.Enable();
+        interactAction = InputSystem.actions.FindAction("Interact"); interactAction.Enable();
+        abilityAction = InputSystem.actions.FindAction("Ability"); abilityAction.Enable();
         moveAction.performed += interaction.GetLookTarget;  
         lookAction.performed += interaction.GetLookTarget; 
         moveAction.performed += interaction.GetLookTarget; 
@@ -38,6 +38,10 @@ public class PlayerInputSystem : MonoBehaviour
         lookAction.performed -= interaction.GetLookTarget;
         interactAction.performed -= OnInteracted;
         abilityAction.performed -= OnSwitchAbilityPerformed;
+        moveAction.Disable();
+        lookAction.Disable();
+        interactAction.Disable(); 
+        abilityAction.Disable();
     }
     private void OnInteracted(InputAction.CallbackContext context)
     { 
@@ -67,10 +71,10 @@ public class PlayerInputSystem : MonoBehaviour
         else if (buttonControl != null)
         {
             if (buttonControl.name == "leftButton" && activeAbility == ActiveAbility.structure)
-            { 
-                GameManager.Instance.StructureSystem.DeployStructure();
-                activeAbility = ActiveAbility.none;
-            } 
+            {
+                if (GameManager.Instance.StructureSystem.DeployStructure())
+                    activeAbility = ActiveAbility.none;
+            }
         }
         else if (axisControl != null && context.control.name == "scroll" && activeAbility == ActiveAbility.structure)
         {
