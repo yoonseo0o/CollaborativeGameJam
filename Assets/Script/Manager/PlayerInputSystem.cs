@@ -24,9 +24,7 @@ public class PlayerInputSystem : MonoBehaviour
         interactAction = InputSystem.actions.FindAction("Interact"); interactAction.Enable();
         abilityAction = InputSystem.actions.FindAction("Ability"); abilityAction.Enable();
         moveAction.performed += interaction.GetLookTarget;  
-        lookAction.performed += interaction.GetLookTarget; 
-        moveAction.performed += interaction.GetLookTarget; 
-        lookAction.performed += interaction.GetLookTarget;
+        lookAction.performed += interaction.GetLookTarget;  
         interactAction.performed += OnInteracted;
         abilityAction.performed += OnSwitchAbilityPerformed;
 
@@ -45,6 +43,7 @@ public class PlayerInputSystem : MonoBehaviour
     }
     private void OnInteracted(InputAction.CallbackContext context)
     { 
+
         interaction.OnInteract();
     } 
     private void OnSwitchAbilityPerformed(InputAction.CallbackContext context)
@@ -70,10 +69,13 @@ public class PlayerInputSystem : MonoBehaviour
         }
         else if (buttonControl != null)
         {
-            if (buttonControl.name == "leftButton" && activeAbility == ActiveAbility.structure)
+            if (buttonControl.name == "leftButton"  )
             {
+                //Debug.Log("")
+                if(activeAbility == ActiveAbility.structure) {
                 if (GameManager.Instance.StructureSystem.DeployStructure())
                     activeAbility = ActiveAbility.none;
+                }
             }
         }
         else if (axisControl != null && context.control.name == "scroll" && activeAbility == ActiveAbility.structure)

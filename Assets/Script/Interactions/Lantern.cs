@@ -4,14 +4,17 @@ using UnityEngine;
 public class Lantern : MonoBehaviour, Entity, Interaction
 {
     private int hp=25;
-    private int range;
+    private float range;
     private int intensity;
     [SerializeField] private int playerHealTime;
     [SerializeField] private GameObject canvas;
 
+    [SerializeField] private Transform rangeTrf;
+
     void Awake()
     {
         canvas.SetActive(false);
+        range = rangeTrf.localScale.x; 
     }
     void Entity.Attacked(int damageAmount)
     { 
@@ -31,13 +34,17 @@ public class Lantern : MonoBehaviour, Entity, Interaction
         // 강화창 출력
         canvas.SetActive(true);
     }
-    private void RangeStrengthen()
+    public void RangeStrengthen(float value)
     {
         // 범위 강화
+        Debug.Log("범위 강화");
+        range = value;
+        rangeTrf.localScale = Vector3.one * range;
     }
-    private void IntensityStrengthen()
+    public void IntensityStrengthen()
     {
         // 밝기 강화
+        Debug.Log("밝기 강화");
     }
     private void OnTriggerEnter(Collider other)
     { 

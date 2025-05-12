@@ -20,7 +20,12 @@ public class StructureSystem : MonoBehaviour
     private Coroutine co;
     [SerializeField] private GameObject[] EmptyStructureList;
     [SerializeField] private GameObject[] StructureList;
-     
+    private LayerMask groundLayer;
+    [SerializeField] private float maxDistance;
+    private void Awake()
+    {
+        groundLayer = 1 << 8;
+    } 
     public void SelectStructure()
     {
         if(SelectIndex<0 && SelectIndex>= StructureList.Length) {
@@ -55,8 +60,14 @@ public class StructureSystem : MonoBehaviour
     {
         // 오브젝트 위치 실시간 반영
         while(true)
-        {
-            selectObj.transform.position = Camera.main.transform.position + Camera.main.transform.forward * distanceToCamera;
+        { 
+            Vector3 direction = Camera.main.transform.forward;
+            Ray ray = new Ray(Camera.main.transform.position, direction.normalized);   
+
+            if (Physics.Raycast(ray, out RaycastHit hit,maxDistance,groundLayer))
+            { 
+                selectObj.transform.position = hit.point;
+            } 
             yield return null;
         }
     }
@@ -65,8 +76,11 @@ public class StructureSystem : MonoBehaviour
 
         if (StructureList[SelectIndex].GetComponent<Structure>().pureCost >
             GameManager.Instance.PureSystem.pure)
-        {
-            Debug.Log("동심 부족");
+        { 
+            return false;
+        }
+        if (selectObj.GetComponent<StructDeploySupport>().possibility == DeploymentPossibility.impossible)
+        { 
             return false;
         }
         //Debug.Log($"{StructureList[SelectIndex].GetComponent<Structure>().pureCost} 동심을 소모해 {StructureList[SelectIndex]}를 배치하였습니다");
