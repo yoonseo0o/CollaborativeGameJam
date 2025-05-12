@@ -40,7 +40,8 @@ public class StructureSystem : MonoBehaviour
                 co = null;
             }
         }
-        selectObj = Instantiate(EmptyStructureList[SelectIndex],transform); 
+        selectObj = Instantiate(EmptyStructureList[SelectIndex],transform);
+        CheckBuyability();
         co = StartCoroutine(ReflectionLocation());
         GameManager.Instance.UIManager.ActiveSketchbook(true); 
         GameManager.Instance.UIManager.UpdateStructure(StructureList[SelectIndex].GetComponent<Structure>());
@@ -73,17 +74,11 @@ public class StructureSystem : MonoBehaviour
     }
     public bool DeployStructure()
     {
-
-        if (StructureList[SelectIndex].GetComponent<Structure>().pureCost >
-            GameManager.Instance.PureSystem.pure)
+        DeploymentPossibility possibility = selectObj.GetComponent<StructDeploySupport>().possibility;
+        if (possibility == DeploymentPossibility.impossible|| possibility == DeploymentPossibility.cantBuy )
         { 
             return false;
         }
-        if (selectObj.GetComponent<StructDeploySupport>().possibility == DeploymentPossibility.impossible)
-        { 
-            return false;
-        }
-        //Debug.Log($"{StructureList[SelectIndex].GetComponent<Structure>().pureCost} 동심을 소모해 {StructureList[SelectIndex]}를 배치하였습니다");
         GameManager.Instance.PureSystem.LosePure(
             StructureList[SelectIndex].GetComponent<Structure>().pureCost);
         if (co != null)
@@ -93,5 +88,22 @@ public class StructureSystem : MonoBehaviour
         }
         DeselectStructure();
         return true;
+    }
+    public void CheckBuyability()
+    {
+        Debug.Log("check pure");
+        if (selectObj == null) return;
+        // 선택 구조물이 구매 가능 상태라면
+        if(StructureList[SelectIndex].GetComponent<Structure>().pureCost
+            <= GameManager.Instance.PureSystem.pure)
+        {
+            selectObj.GetComponent<StructDeploySupport>().
+                ChangePossibility(DeploymentPossibility.canBuy);
+        }
+        else
+        {
+            selectObj.GetComponent<StructDeploySupport >().
+                ChangePossibility(DeploymentPossibility.cantBuy);
+        }
     }
 }

@@ -13,16 +13,19 @@ public class PureSystem : MonoBehaviour
     public void GetPure()
     {
         pure ++;
+        GameManager.Instance.StructureSystem.CheckBuyability();
         GameManager.Instance.UIManager.UpdatePureCount(pure);
     }
     public void GetPure(int amount)
     {
         pure += amount;
+        GameManager.Instance.StructureSystem.CheckBuyability();
         GameManager.Instance.UIManager.UpdatePureCount (pure);
     }
     public void LosePure(int amount)
     {
         pure -= amount;
+        GameManager.Instance.StructureSystem.CheckBuyability();
         GameManager.Instance.UIManager.UpdatePureCount(pure);
     }
     private void AddPureOverTime()

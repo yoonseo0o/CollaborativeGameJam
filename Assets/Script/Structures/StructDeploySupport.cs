@@ -1,17 +1,15 @@
 using UnityEngine;
-public enum DeploymentPossibility { possible, impossible }
+public enum DeploymentPossibility { possible, impossible, canBuy , cantBuy}
 public class StructDeploySupport : MonoBehaviour
 {
     [SerializeField] private Material[] materials;
     private MeshRenderer meshRenderer;
-    public DeploymentPossibility possibility {  get; private set; }
+    public DeploymentPossibility possibility { get; private set; }
     private int enterStructure;
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        enterStructure = 0;
-        possibility = DeploymentPossibility.possible;
-        changeMaterial();
+        enterStructure = 0; 
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,11 +17,8 @@ public class StructDeploySupport : MonoBehaviour
         if (other.CompareTag("Structure"))
         {
             enterStructure++;
-            possibility = DeploymentPossibility.impossible;
+            ChangePossibility(DeploymentPossibility.impossible); 
         }
-        if ((int)possibility >= materials.Length)
-            Debug.LogError("materials이 없음");
-        changeMaterial();
     }
 
     private void OnTriggerExit(Collider other)
@@ -33,14 +28,44 @@ public class StructDeploySupport : MonoBehaviour
             enterStructure--;
             if (enterStructure <= 0)
             {
-                possibility = DeploymentPossibility.possible;
-                changeMaterial();
+                ChangePossibility(DeploymentPossibility.possible);
             }
         }
     }
+    public void ChangePossibility(DeploymentPossibility input)
+    {
+        DeploymentPossibility temp = possibility;
+        switch (input)
+        {
+            case DeploymentPossibility.impossible:
+                if (possibility == DeploymentPossibility.cantBuy)
+                    break;
+                possibility = input;
+                break;
+            case DeploymentPossibility.possible:
+                if (possibility == DeploymentPossibility.cantBuy)
+                    break;
+                possibility = input;
+                break;
+            case DeploymentPossibility.cantBuy:
+                possibility = input;
+                break;
+            case DeploymentPossibility.canBuy:
+                if (enterStructure <= 0)
+                    possibility = DeploymentPossibility.possible;
+                else
+                    possibility = DeploymentPossibility.impossible;
+                break;
+            default:
+                break;
+        } 
+        if (temp != possibility)
+            changeMaterial();
+    }
     private void changeMaterial()
     {
-
+        if ((int)possibility >= materials.Length)
+            Debug.LogError("materials이 없음");
         meshRenderer.material = materials[(int)possibility];
     }
 }
