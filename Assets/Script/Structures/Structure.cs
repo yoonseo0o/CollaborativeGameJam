@@ -3,8 +3,13 @@ using UnityEngine;
 public abstract class Structure : MonoBehaviour, Entity
 {
     [Header("Property")]
-    [SerializeField] private int pureCost;
-    [SerializeField] private int hp; 
+    public int pureCost;
+    [SerializeField] private int hp;
+
+    [Header("UI content")]
+    public string name;
+    public string description;
+    //public Sprite img;
     public abstract void Ability();
     void Entity.Attacked(int damageAmount)
     {
