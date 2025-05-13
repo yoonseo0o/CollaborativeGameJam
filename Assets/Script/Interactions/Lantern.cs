@@ -1,5 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Lantern : MonoBehaviour, Entity, Interaction
 {
@@ -11,10 +15,15 @@ public class Lantern : MonoBehaviour, Entity, Interaction
 
     [SerializeField] private Transform rangeTrf;
 
+    // canvas input 탐지
+    private GraphicRaycaster raycaster;
+    private EventSystem eventSystem;
     void Awake()
     {
         canvas.SetActive(false);
-        range = rangeTrf.localScale.x; 
+        range = rangeTrf.localScale.x;
+        eventSystem = EventSystem.current;
+        raycaster = canvas.GetComponent<GraphicRaycaster>();
     }
     bool Entity.Attacked(int damageAmount)
     { 
@@ -35,34 +44,83 @@ public class Lantern : MonoBehaviour, Entity, Interaction
     void Interaction.interaction()
     {
         // 강화창 출력
-        canvas.SetActive(true);
+        CanvasSetActive(true);
     }
-    public void RangeStrengthen(float value)
+    void CanvasLookAt()
+    {
+        canvas.transform.LookAt(Camera.main.transform);
+        canvas.transform.Rotate(0, 180f, 0);
+    }
+    void CanvasOnClick(InputAction.CallbackContext context)
+    { 
+        var buttonControl = context.control as UnityEngine.InputSystem.Controls.ButtonControl;
+        if (buttonControl != null && buttonControl.name == "leftButton")
+        {
+            Vector2 screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+
+            PointerEventData pointerData = new PointerEventData(eventSystem)
+            {
+                position = screenCenter
+            };
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(pointerData, results);
+
+            foreach (RaycastResult result in results)
+            {  
+                Button button = result.gameObject.GetComponent<Button>();
+                if (button != null)
+                {
+                    button.onClick.Invoke();
+                    CanvasSetActive(false);
+                    break; 
+                }
+
+            }
+        }
+    }
+    public void RangeIncrease(float value)
     {
         // 범위 강화
         Debug.Log("범위 강화");
         range = value;
-        rangeTrf.localScale = Vector3.one * range;
+        rangeTrf.localScale = rangeTrf.localScale * range;
     }
-    public void IntensityStrengthen()
+    public void IntensityIncrease()
     {
         // 밝기 강화
         Debug.Log("밝기 강화");
     }
+    void CanvasSetActive(bool active)
+    {
+        if (canvas.activeSelf == active) return;
+
+        canvas.SetActive(active);
+        if(active)
+        {
+            GameManager.Instance.PlayerInputSystem.abilityAction.performed += CanvasOnClick;
+            InvokeRepeating("CanvasLookAt", 0, Time.deltaTime);   
+        }
+        else
+        {
+            GameManager.Instance.PlayerInputSystem.abilityAction.performed -= CanvasOnClick;
+            CancelInvoke("CanvasLookAt");
+        }
+    }
     private void OnTriggerEnter(Collider other)
     { 
         if (other.CompareTag("Player"))
-        {
-            //Debug.Log("player enter");
+        { 
             other.GetComponent<Player>().InvokeRepeating("ModifyHealth", playerHealTime, playerHealTime);
+            
         }
     }
     private void OnTriggerExit(Collider other)
-    {
+    { 
         if (other.CompareTag("Player"))
-        {
-            //Debug.Log("player exit");
+        { 
             other.GetComponent<Player>().CancelInvoke("ModifyHealth");
+            CanvasSetActive(false);
         }
-    }
+    } 
 }
