@@ -21,10 +21,12 @@ public class StructureSystem : MonoBehaviour
     [SerializeField] private GameObject[] EmptyStructureList;
     [SerializeField] private GameObject[] StructureList;
     private LayerMask groundLayer;
+    private LayerMask structureEmptyLayer;
     [SerializeField] private float maxDistance;
     private void Awake()
     {
         groundLayer = 1 << 8;
+        structureEmptyLayer = 1 << 9;
     } 
     public void SelectStructure()
     {
@@ -56,19 +58,18 @@ public class StructureSystem : MonoBehaviour
         }
         selectObj = null;
         GameManager.Instance.UIManager.ActiveSketchbook(false);
-    }
+    } 
     private IEnumerator ReflectionLocation()
     {
         // 오브젝트 위치 실시간 반영
         while(true)
         { 
             Vector3 direction = Camera.main.transform.forward;
-            Ray ray = new Ray(Camera.main.transform.position, direction.normalized);   
-
-            if (Physics.Raycast(ray, out RaycastHit hit,maxDistance,groundLayer))
-            { 
-                selectObj.transform.position = hit.point;
-            } 
+            Ray ray = new Ray(Camera.main.transform.position, direction.normalized);
+             
+            if (Physics.Raycast(ray, out RaycastHit hit,maxDistance, ~structureEmptyLayer))  
+                if((1<<hit.transform.gameObject.layer) == groundLayer)
+                        selectObj.transform.position = hit.point; 
             yield return null;
         }
     }

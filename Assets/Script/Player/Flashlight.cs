@@ -64,13 +64,23 @@ public class Flashlight : MonoBehaviour
             float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
             int damageAmount = Mathf.RoundToInt(ratio * brightness);
 
-            Debug.Log($"{ratio} * {brightness} = {damageAmount}");
             // 공격 후, 죽었으면 삭제
             if (m.GetComponent<Entity>().Attacked(damageAmount))
                 deadMonsters.Add(m);
         }
         foreach (var m in deadMonsters)
             monsters.Remove(m); 
+    }
+    public void RangeIncrease()
+    {
+
+        transform.localScale += new Vector3(1,0,1);
+        Debug.Log($"범위 증가 : {transform.localScale.x}");
+    }
+    public void BrightnessIncrease()
+    {
+        brightness++;
+        Debug.Log($"밝기 증가 : {brightness}");
     }
     private void OnTriggerEnter(Collider other)
     {

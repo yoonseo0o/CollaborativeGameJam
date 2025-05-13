@@ -53,6 +53,11 @@ public class Lantern : MonoBehaviour, Entity, Interaction
     }
     void CanvasOnClick(InputAction.CallbackContext context)
     { 
+        if (GameManager.Instance.PlayerInputSystem.ActiveAbility != ActiveAbility.none)
+        {
+            Debug.Log("빈손으로 접근하세요.");
+            return;
+        }
         var buttonControl = context.control as UnityEngine.InputSystem.Controls.ButtonControl;
         if (buttonControl != null && buttonControl.name == "leftButton")
         {
@@ -79,18 +84,7 @@ public class Lantern : MonoBehaviour, Entity, Interaction
             }
         }
     }
-    public void RangeIncrease(float value)
-    {
-        // 범위 강화
-        Debug.Log("범위 강화");
-        range = value;
-        rangeTrf.localScale = rangeTrf.localScale * range;
-    }
-    public void IntensityIncrease()
-    {
-        // 밝기 강화
-        Debug.Log("밝기 강화");
-    }
+    
     void CanvasSetActive(bool active)
     {
         if (canvas.activeSelf == active) return;

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +10,8 @@ public class PlayerInputSystem : MonoBehaviour
     public InputAction lookAction;
     public InputAction interactAction;
     public InputAction abilityAction;
-     
     private ActiveAbility activeAbility;
+    public ActiveAbility ActiveAbility { get { return activeAbility; } private set { activeAbility = value; } }
     //[Header("Look")]
     PlayerInteraction interaction;
     [Header("Attack")]
@@ -28,7 +29,7 @@ public class PlayerInputSystem : MonoBehaviour
         interactAction.performed += OnInteracted;
         abilityAction.performed += OnSwitchAbilityPerformed;
 
-        activeAbility = ActiveAbility.none;
+        ActiveAbility = ActiveAbility.none;
     } 
     private void OnDisable()
     { 
@@ -52,37 +53,51 @@ public class PlayerInputSystem : MonoBehaviour
         var buttonControl = context.control as UnityEngine.InputSystem.Controls.ButtonControl;
         var axisControl = context.control as UnityEngine.InputSystem.Controls.Vector2Control; 
         if (keyControl != null)
-        {
-            activeAbility = ActiveAbility.none;
-            GameManager.Instance.StructureSystem.DeselectStructure();
+        { 
             if (keyControl.keyCode == Key.Digit1)
             { 
-                activeAbility = ActiveAbility.flash;
+                if(ActiveAbility == ActiveAbility.flash)
+                {
+                    flash.TurnOn(false);
+                    ActiveAbility = ActiveAbility.none; 
+                }
+                else
+                {
+                    ActiveAbility = ActiveAbility.flash; 
+                    GameManager.Instance.StructureSystem.DeselectStructure();
+                }
             }
             else if (keyControl.keyCode == Key.Digit2)
-            { 
-                flash.TurnOn(false);
-                activeAbility = ActiveAbility.structure;
-                GameManager.Instance.StructureSystem.SelectStructure();
+            {
+                if (ActiveAbility == ActiveAbility.structure)
+                {
+                    ActiveAbility = ActiveAbility.none;
+                }
+                else
+                {
+                    ActiveAbility = ActiveAbility.structure;
+                    flash.TurnOn(false);
+                    GameManager.Instance.StructureSystem.SelectStructure();
+                }
             }
         }
         else if (buttonControl != null)
         {
             if (buttonControl.name == "leftButton"  )
             {
-                if (activeAbility == ActiveAbility.flash)
+                if (ActiveAbility == ActiveAbility.flash)
                 {
                     flash.Turn();
 
                 }
-                if (activeAbility == ActiveAbility.structure)
+                if (ActiveAbility == ActiveAbility.structure)
                 {
                     if (GameManager.Instance.StructureSystem.DeployStructure())
-                        activeAbility = ActiveAbility.none;
+                        ActiveAbility = ActiveAbility.none;
                 }
             }
         }
-        else if (axisControl != null && context.control.name == "scroll" && activeAbility == ActiveAbility.structure)
+        else if (axisControl != null && context.control.name == "scroll" && ActiveAbility == ActiveAbility.structure)
         {
             Vector2 scrollValue = context.ReadValue<Vector2>();
             GameManager.Instance.StructureSystem.SelectIndex =

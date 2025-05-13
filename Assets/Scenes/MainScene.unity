@@ -10734,7 +10734,7 @@ GameObject:
   - component: {fileID: 666416857}
   - component: {fileID: 666416856}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Button _IntensityIncrease
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10804,9 +10804,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1790045865}
-        m_TargetAssemblyTypeName: Lantern, Assembly-CSharp
-        m_MethodName: IntensityStrengthen
+      - m_Target: {fileID: 2029282053}
+        m_TargetAssemblyTypeName: Flashlight, Assembly-CSharp
+        m_MethodName: BrightnessIncrease
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23469,7 +23469,7 @@ GameObject:
   - component: {fileID: 1426572634}
   - component: {fileID: 1426572633}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button_RangeIncrease
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23539,10 +23539,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1790045865}
-        m_TargetAssemblyTypeName: Lantern, Assembly-CSharp
-        m_MethodName: RangeStrengthen
-        m_Mode: 4
+      - m_Target: {fileID: 2029282053}
+        m_TargetAssemblyTypeName: Flashlight, Assembly-CSharp
+        m_MethodName: RangeIncrease
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -29419,12 +29419,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1790045859}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 322d1090d5c2e3740bf09128324d8e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealTime: 15
+  playerHealTime: 2
   canvas: {fileID: 336390242}
   rangeTrf: {fileID: 1825015510}
 --- !u!64 &1790045866
@@ -33194,7 +33194,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 2.5}
-  m_LocalScale: {x: 4.5, y: 2, z: 4.5}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1374512956}

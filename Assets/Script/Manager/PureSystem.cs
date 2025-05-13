@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.Utilities;
 public class PureSystem : MonoBehaviour
 {
     public int pure { get; private set; }
-
+    private int maxPure = 999999;
     [SerializeField] private float interval;
     private void Start()
     {
@@ -19,6 +19,9 @@ public class PureSystem : MonoBehaviour
     public void GetPure(int amount)
     {
         pure += amount;
+        if (pure >= maxPure) 
+            pure = maxPure; 
+
         GameManager.Instance.StructureSystem.CheckBuyability();
         GameManager.Instance.UIManager.UpdatePureCount (pure);
     }
