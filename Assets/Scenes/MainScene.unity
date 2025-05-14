@@ -31818,6 +31818,60 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6803673569164657021, guid: f69fa572bedaac24b813b2dd34fce7b0, type: 3}
   m_PrefabInstance: {fileID: 1927976545}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1940918596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1940918598}
+  - component: {fileID: 1940918597}
+  m_Layer: 0
+  m_Name: MonsterSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1940918597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940918596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92915ecf446f7e5439d5f17a14c1184e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTrf: {fileID: 149952518}
+  lanternTrf: {fileID: 1790045863}
+  monsters:
+  - {fileID: 7657600896210739334, guid: 6a161247c6155ef48877d769d5daa4dd, type: 3}
+  - {fileID: 7657600896210739334, guid: 25eab646a62f32848984f52506bec8f4, type: 3}
+  bigRadius1: 50
+  bigRadius2: 50
+  smallRadius1: 15
+  smallRadius2: 5
+  maxAttempts: 1000
+--- !u!4 &1940918598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940918596}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1770155, y: 8.787578, z: 0.72246635}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1943261828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35228,3 +35282,4 @@ SceneRoots:
   - {fileID: 513392801}
   - {fileID: 1294788155}
   - {fileID: 834610002}
+  - {fileID: 1940918598}

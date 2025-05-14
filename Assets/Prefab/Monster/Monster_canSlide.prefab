@@ -146,11 +146,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 10
-  speed: 0
+  speed: 3
   damageAmount: 1
   pureValue: 2
   attackCoolingTime: 2
   attackDistance: 1
+  IsPassLantern: 0
+  Priority: 010000000000000002000000
   target: {fileID: 0}
 --- !u!54 &1578379805912090156
 Rigidbody:

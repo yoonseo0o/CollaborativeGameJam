@@ -72,6 +72,7 @@ public class PlayerInputSystem : MonoBehaviour
                 if (ActiveAbility == ActiveAbility.structure)
                 {
                     ActiveAbility = ActiveAbility.none;
+                    GameManager.Instance.StructureSystem.DeselectStructure();
                 }
                 else
                 {

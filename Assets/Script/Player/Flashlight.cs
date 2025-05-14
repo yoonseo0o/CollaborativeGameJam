@@ -55,11 +55,11 @@ public class Flashlight : MonoBehaviour
     {
         if (!IsOn)
             return;
-        Vector3 thisPos = Camera.main.transform.position;
-            //Debug.Log(monsters.Count);
-            List<Transform> deadMonsters = new List<Transform>();
+        Vector3 thisPos = Camera.main.transform.position; 
+        List<Transform> deadMonsters = new List<Transform>();
         foreach (var m in monsters)
         { 
+            if( m ==null ) continue;
             float distanceToTarget = Vector3.Distance(transform.position, m.transform.position);
             float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
             int damageAmount = Mathf.RoundToInt(ratio * brightness);

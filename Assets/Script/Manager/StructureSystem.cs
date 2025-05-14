@@ -22,11 +22,13 @@ public class StructureSystem : MonoBehaviour
     [SerializeField] private GameObject[] StructureList;
     private LayerMask groundLayer;
     private LayerMask structureEmptyLayer;
+    private LayerMask MonsterLayer;
     [SerializeField] private float maxDistance;
     private void Awake()
     {
         groundLayer = 1 << 8;
         structureEmptyLayer = 1 << 9;
+        MonsterLayer = 1 << 6;
     } 
     public void SelectStructure()
     {
@@ -67,7 +69,7 @@ public class StructureSystem : MonoBehaviour
             Vector3 direction = Camera.main.transform.forward;
             Ray ray = new Ray(Camera.main.transform.position, direction.normalized);
              
-            if (Physics.Raycast(ray, out RaycastHit hit,maxDistance, ~structureEmptyLayer))  
+            if (Physics.Raycast(ray, out RaycastHit hit,maxDistance, ~(structureEmptyLayer|MonsterLayer )))  
                 if((1<<hit.transform.gameObject.layer) == groundLayer)
                         selectObj.transform.position = hit.point; 
             yield return null;

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public PlayerInputSystem PlayerInputSystem;
 
     [Header("")]
+    public Transform playerTrf;
     public Transform lanternTrf;
 
     public int playerMaxHp { get; private set; }

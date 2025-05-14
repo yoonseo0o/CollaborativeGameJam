@@ -146,9 +146,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 10
-  speed: 0
+  speed: 5
   damageAmount: 1
   pureValue: 2
+  type: 1
   attackCoolingTime: 2
   attackDistance: 1
   target: {fileID: 0}
