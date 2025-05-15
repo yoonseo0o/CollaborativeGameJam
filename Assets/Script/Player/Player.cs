@@ -11,8 +11,8 @@ using UnityEditor.PackageManager;
 public class Player : MonoBehaviour, Entity
 {
     [Header("property")]
-    private int maxHp=10;
-    private int hp=10;
+    private int maxHp=60;
+    private int hp=60;
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
     private int damageAmount = 5;

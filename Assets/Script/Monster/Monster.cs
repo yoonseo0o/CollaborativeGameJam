@@ -53,6 +53,7 @@ public class Monster : MonoBehaviour, Entity
     {
         if(stanbyAttackCo != null)
             StopCoroutine(stanbyAttackCo);
+        GameManager.Instance.MonsterManager.Remove(this);
     }
     void Update()
     {
@@ -109,8 +110,25 @@ public class Monster : MonoBehaviour, Entity
         GameManager.Instance.PureSystem.GetPure(pureValue);
         Destroy(gameObject);
     }
-    private void TargetSelection()
+    public void TargetSelection()
     {
+        // 해의 조각 시간이라면 
+        if (GameManager.Instance.SunSystem.IsTime)
+        {
+            if (GameManager.Instance.SunSystem.pieceTrf==null)
+            {
+                Debug.LogError("해의 조각이 null");
+                target = GameManager.Instance.playerTrf;
+                return;
+            }
+            // 플레이어와 해의 조각 중 가까운 곳으로 타겟팅
+            if (Vector3.Distance(transform.position, GameManager.Instance.SunSystem.pieceTrf.position) <
+                           Vector3.Distance(transform.position, GameManager.Instance.playerTrf.position))
+                target = GameManager.Instance.SunSystem.pieceTrf;
+            else
+                target = GameManager.Instance.playerTrf;
+            return;
+        }
         switch (type)
         {
             case MonsterType.walk:
@@ -197,8 +215,6 @@ public class Monster : MonoBehaviour, Entity
                 }
                 break;
         }
-        if (type == MonsterType.creep && target == GameManager.Instance.lanternTrf)
-            Debug.Log("dpd");
 
     }
     private void moveToTarget()
@@ -242,7 +258,11 @@ public class Monster : MonoBehaviour, Entity
             if (target != null)
             {
                 IsAttack = true;
-                Attack();
+                if (!Attack())
+                {
+                    IsAttack = false;
+                    continue;
+                }
             }
             else continue;
             // 쿨타임 돌라가
@@ -250,16 +270,25 @@ public class Monster : MonoBehaviour, Entity
             IsAttack=false;
         }
     }
-    private void Attack()
+    private bool Attack()
     {
         if(target==null)
         { 
             TargetSelection();
+            return false;
         }
         if (target.GetComponent<Entity>()!=null)
-        { 
+        {  
+            if ((target.GetComponent<Entity>() is PieceOfTheSun)&&
+                    !GameManager.Instance.SunSystem.IsTime)
+            { 
+                TargetSelection();
+                return false;
+            }
             animator.SetTrigger("IsAttack");
             target.GetComponent<Entity>().Attacked(damageAmount);
+            return true;
         }
+        return false;
     }  
 }

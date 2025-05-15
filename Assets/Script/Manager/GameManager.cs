@@ -10,14 +10,18 @@ public class GameManager : MonoBehaviour
     }
     [Header("Manager")]
     public UIManager UIManager;
+    public MonsterManager MonsterManager;
+
+    [Header("System")]
     public PureSystem PureSystem;
     public StructureSystem StructureSystem;
     public PlayerInputSystem PlayerInputSystem;
+    public SunSystem SunSystem;
 
     [Header("")]
+    public MonsterSpawner MonsterSpawner;
     public Transform playerTrf;
-    public Transform lanternTrf;
-
+    public Transform lanternTrf; 
 
     [Header("Data")]
     public FlashData flashData;

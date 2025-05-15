@@ -6,9 +6,9 @@ using Random = UnityEngine.Random;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    private float spawnInterval = 5;
+    public float spawnInterval { get; private set; } = 5;
     private int spawnType; //?
-    private int spawnAmount=2;
+    public int spawnAmount { get; private set; } = 2;
     private Transform playerTrf;
     private Transform lanternTrf;
     [SerializeField] GameObject[] monsters;
@@ -31,6 +31,11 @@ public class MonsterSpawner : MonoBehaviour
     private void OnDestroy()
     {
         if(co!=null) StopCoroutine(co);
+    }
+    public void SetSpawnOption(float interval,int amount)
+    {
+        spawnInterval = interval;
+        spawnAmount = amount;
     }
     IEnumerator MonsterSpawnInterval()
     {
@@ -57,6 +62,7 @@ public class MonsterSpawner : MonoBehaviour
             { 
                 GameObject obj = Instantiate(monsters[type], transform);
                 obj.transform.position = new Vector3(result.Value.x, 0, result.Value.y);
+                GameManager.Instance.MonsterManager.AddMonster(obj.GetComponent<Monster>());
             }
             else
                 Debug.LogWarning("범위 내에서 위치를 찾지 못했습니다.");
