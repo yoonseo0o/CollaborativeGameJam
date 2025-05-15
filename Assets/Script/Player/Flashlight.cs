@@ -10,17 +10,24 @@ public class Flashlight : MonoBehaviour
     [Header(" ")]
     [SerializeField] private float brightness;
     [SerializeField] private float distance;  
-    //[SerializeField] private float range;  
+    [SerializeField] private float range;  
     [Header(" ")] 
     [SerializeField] private float attackDelay=0.2f;
-    private List<Transform> monsters;  
+    private List<Transform> monsters;
+
+
+    private int rangeLevel;
+    private int brightnessLevel;
+    private int distanceLevel;
     private void Awake()
     {
         IsOn = gameObject.activeSelf;
-        distance = Vector3.Distance(Camera.main.transform.position,
-            transform.GetChild(0).position);
+        
         monsters = new List<Transform>();
-        //range = transform.localScale.x/2;
+            
+        SetBrightnessLevel(0);
+        SetDistanceLevel(0);
+        SetRangeLevel(0); 
     }
 
     public void Turn( )
@@ -71,16 +78,90 @@ public class Flashlight : MonoBehaviour
         foreach (var m in deadMonsters)
             monsters.Remove(m); 
     }
-    public void RangeIncrease()
+    public void SetRangeLevel(int level)
+    {
+        rangeLevel = level;
+        range = GameManager.Instance.flashData.rangeDatas[rangeLevel].value; 
+        transform.localScale = new Vector3(range, transform.localScale.y, range);
+        Debug.Log($"범위 : {transform.localScale.x}");
+    }
+    public void SetBrightnessLevel(int level)
+    {
+        brightnessLevel = level;
+        brightness = GameManager.Instance.flashData.brightnessDatas[brightnessLevel].value; 
+        Debug.Log($"밝기 : {brightness}");
+    }
+    public void SetDistanceLevel(int level)
+    {
+        distanceLevel = level;
+        distance = GameManager.Instance.flashData.distanceDatas[distanceLevel].value;
+        transform.localPosition = new Vector3(0, 0, (distance - 0.5f) / 2 + 0.5f);
+        transform.localScale = new Vector3(transform.localScale.x, (distance - 0.5f) / 2, transform.localScale.z);
+
+        Debug.Log($"사거리 : {distance}");
+    }
+    public void UpgradeRangeLevel()
+    {
+        if(rangeLevel>= GameManager.Instance.flashData.rangeDatas.Length-1)
+        {
+            Debug.Log($"최대 레벨 도달");
+            return;
+        }
+        // 손전등 데이터의 필요 코스트가 없다면 
+        if (GameManager.Instance.flashData.rangeDatas[rangeLevel].pureCost >
+            GameManager.Instance.PureSystem.pure)
+        {
+            Debug.Log($"필요 동심 부족 {GameManager.Instance.flashData.rangeDatas[rangeLevel].pureCost-GameManager.Instance.PureSystem.pure} 동심이 더 필요합니다");
+            return;
+        }
+        else
+        {
+            GameManager.Instance.PureSystem.LosePure(GameManager.Instance.flashData.rangeDatas[rangeLevel].pureCost);
+            SetRangeLevel(++rangeLevel);
+            GameManager.Instance.lanternTrf.GetComponent<Lantern>().CanvasSetActive(false);
+
+        }
+
+    }
+    public void UpgradeBrightnessLevel()
     {
 
-        transform.localScale += new Vector3(1,0,1);
-        Debug.Log($"범위 증가 : {transform.localScale.x}");
+        if (brightnessLevel >= GameManager.Instance.flashData.brightnessDatas.Length - 1)
+        {
+            Debug.Log($"최대 레벨 도달");
+            return;
+        }
+        // 손전등 데이터의 필요 코스트가 없다면 
+        if (GameManager.Instance.flashData.brightnessDatas[brightnessLevel].pureCost >
+            GameManager.Instance.PureSystem.pure)
+            return;
+        else
+        {
+            GameManager.Instance.PureSystem.LosePure(GameManager.Instance.flashData.brightnessDatas[brightnessLevel].pureCost);
+            SetBrightnessLevel(++brightnessLevel);
+            GameManager.Instance.lanternTrf.GetComponent<Lantern>().CanvasSetActive(false);
+
+        }
     }
-    public void BrightnessIncrease()
+    public void UpgradeDistanceLevel()
     {
-        brightness++;
-        Debug.Log($"밝기 증가 : {brightness}");
+
+        if (distanceLevel >= GameManager.Instance.flashData.distanceDatas.Length - 1)
+        {
+            Debug.Log($"최대 레벨 도달");
+            return;
+        }
+        // 손전등 데이터의 필요 코스트가 없다면 
+        if (GameManager.Instance.flashData.distanceDatas[distanceLevel].pureCost >
+            GameManager.Instance.PureSystem.pure)
+            return;
+        else
+        {
+            GameManager.Instance.PureSystem.LosePure(GameManager.Instance.flashData.distanceDatas[distanceLevel].pureCost);
+            SetDistanceLevel(++distanceLevel);
+            GameManager.Instance.lanternTrf.GetComponent<Lantern>().CanvasSetActive(false);
+
+        }
     }
     private void OnTriggerEnter(Collider other)
     {

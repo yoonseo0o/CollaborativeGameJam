@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     public Transform playerTrf;
     public Transform lanternTrf;
 
+
+    [Header("Data")]
+    public FlashData flashData;
     public int playerMaxHp { get; private set; }
     public int lanternMaxHp { get; private set; }
     void Awake()

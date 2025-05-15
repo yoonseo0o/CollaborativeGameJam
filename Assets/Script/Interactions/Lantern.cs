@@ -9,7 +9,6 @@ public class Lantern : MonoBehaviour, Entity, Interaction
 {
     private int hp=25;
     private float range;
-    private int intensity;
     [SerializeField] private int playerHealTime;
     [SerializeField] private GameObject canvas;
 
@@ -77,7 +76,7 @@ public class Lantern : MonoBehaviour, Entity, Interaction
                 if (button != null)
                 {
                     button.onClick.Invoke();
-                    CanvasSetActive(false);
+                    //CanvasSetActive(false);
                     break; 
                 }
 
@@ -85,7 +84,7 @@ public class Lantern : MonoBehaviour, Entity, Interaction
         }
     }
     
-    void CanvasSetActive(bool active)
+    public void CanvasSetActive(bool active)
     {
         if (canvas.activeSelf == active) return;
 
