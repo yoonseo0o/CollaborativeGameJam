@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [Header("Manager")]
     public UIManager UIManager;
     public MonsterManager MonsterManager;
+    public StreetLampManager StreetLampManager;
 
     [Header("System")]
     public PureSystem PureSystem;

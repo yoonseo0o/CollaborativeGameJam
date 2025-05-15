@@ -72,7 +72,7 @@ public class StructureSystem : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, ~(structureEmptyLayer | MonsterLayer)))
                 if ((1 << hit.transform.gameObject.layer) == groundLayer)
                 {
-                    Debug.Log(hit.transform.name);
+                    //Debug.Log(hit.transform.name);
                     selectObj.transform.position = hit.point;
                 }
             yield return null;
@@ -96,6 +96,10 @@ public class StructureSystem : MonoBehaviour
         {  
             GameObject obj = Instantiate(StructureList[SelectIndex], transform);
             obj.transform .position = selectObj.transform.position;  
+            if(obj.GetComponent<Structure>() is StreetLamp)
+            {
+                GameManager.Instance.StreetLampManager.streetLamps.Add(obj.GetComponent<StreetLamp >());
+            }
         }
         DeselectStructure();
         return true;
