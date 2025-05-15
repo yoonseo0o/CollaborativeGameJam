@@ -26618,13 +26618,9 @@ MonoBehaviour:
   _selectIndex: 0
   distanceToCamera: 5
   EmptyStructureList:
-  - {fileID: 8677240680649297472, guid: c9a7b9b2bec7d0c4e8143d89beca974a, type: 3}
-  - {fileID: 8677240680649297472, guid: 590fb8cb8dfed2d4b8c7bae64ad00878, type: 3}
-  - {fileID: 8677240680649297472, guid: a29460e42e739894c8a9688046057abb, type: 3}
+  - {fileID: 5629376974661017026, guid: 5dbad7f9714180346b461d9e05b30ec6, type: 3}
   StructureList:
-  - {fileID: 8677240680649297472, guid: 13e8600a9de68bf488ee3c3f3e44ae14, type: 3}
-  - {fileID: 8677240680649297472, guid: 5ca3910bfd5c73244a0afe9bd285bfcb, type: 3}
-  - {fileID: 8677240680649297472, guid: ae6bc3baa54a398469e2726323b2e793, type: 3}
+  - {fileID: 5045011858634385245, guid: 99f5831197bc79f42a2ab09d62352e2b, type: 3}
   maxDistance: 100
 --- !u!4 &1619058012
 Transform:
@@ -32054,7 +32050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1940918597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35628,13 +35624,13 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 705507995}
+  - {fileID: 225307964}
+  - {fileID: 1294788155}
+  - {fileID: 210888990}
   - {fileID: 403178110}
   - {fileID: 149952518}
-  - {fileID: 210888990}
-  - {fileID: 1153344603}
   - {fileID: 1790045863}
-  - {fileID: 225307964}
-  - {fileID: 513392801}
-  - {fileID: 1294788155}
   - {fileID: 834610002}
   - {fileID: 1940918598}
+  - {fileID: 513392801}
+  - {fileID: 1153344603}

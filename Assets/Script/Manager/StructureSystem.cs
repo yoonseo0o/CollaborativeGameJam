@@ -68,16 +68,24 @@ public class StructureSystem : MonoBehaviour
         { 
             Vector3 direction = Camera.main.transform.forward;
             Ray ray = new Ray(Camera.main.transform.position, direction.normalized);
-             
-            if (Physics.Raycast(ray, out RaycastHit hit,maxDistance, ~(structureEmptyLayer|MonsterLayer )))  
-                if((1<<hit.transform.gameObject.layer) == groundLayer)
-                        selectObj.transform.position = hit.point; 
+
+            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, ~(structureEmptyLayer | MonsterLayer)))
+                if ((1 << hit.transform.gameObject.layer) == groundLayer)
+                {
+                    Debug.Log(hit.transform.name);
+                    selectObj.transform.position = hit.point;
+                }
             yield return null;
         }
     }
     public bool DeployStructure()
     {
-        DeploymentPossibility possibility = selectObj.GetComponent<StructDeploySupport>().possibility;
+        if(selectObj == null)
+        {
+            Debug.Log($"선택한 오브젝트가 null임 index : {SelectIndex}");
+            return false;
+        }
+        DeploymentPossibility possibility = selectObj.transform.GetChild(0).GetComponent<StructDeploySupport>().possibility;
         if (possibility == DeploymentPossibility.impossible|| possibility == DeploymentPossibility.cantBuy )
         { 
             return false;
@@ -96,15 +104,20 @@ public class StructureSystem : MonoBehaviour
     { 
         if (selectObj == null) return;
         // 선택 구조물이 구매 가능 상태라면
-        if(StructureList[SelectIndex].GetComponent<Structure>().pureCost
+        if (StructureList[SelectIndex].GetComponent<Structure>() == null)
+        {
+            Debug.Log($"{StructureList[SelectIndex].name}가 null임 index : {SelectIndex}");
+            return ;
+        }
+        if (StructureList[SelectIndex].GetComponent<Structure>().pureCost
             <= GameManager.Instance.PureSystem.pure)
         {
-            selectObj.GetComponent<StructDeploySupport>().
+            selectObj.transform.GetChild(0).GetComponent<StructDeploySupport>().
                 ChangePossibility(DeploymentPossibility.canBuy);
         }
         else
         {
-            selectObj.GetComponent<StructDeploySupport >().
+            selectObj.transform.GetChild(0).GetComponent<StructDeploySupport >().
                 ChangePossibility(DeploymentPossibility.cantBuy);
         }
     }
