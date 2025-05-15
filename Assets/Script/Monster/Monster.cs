@@ -17,6 +17,7 @@ public class Monster : MonoBehaviour, Entity
     [Header("attack property")]
     [SerializeField] private float attackCoolingTime=2f;
     [SerializeField] private float attackDistance=1f;
+    private bool IsAttack;
 
     NavMeshAgent agent;
     [Header("target")]
@@ -26,7 +27,7 @@ public class Monster : MonoBehaviour, Entity
     private Transform playerInRange;
 
 
-
+    [SerializeField ] private Animator animator;
     Coroutine stanbyAttackCo;
 
     void Awake()
@@ -34,6 +35,10 @@ public class Monster : MonoBehaviour, Entity
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
         structuresInRange = new List<Transform>();
+        animator=transform.GetChild(0).GetComponent<Animator>();
+        if (animator == null)
+            Debug.LogError("animator is null");
+        IsAttack = false;
     }
     void Start()
     { 
@@ -198,6 +203,9 @@ public class Monster : MonoBehaviour, Entity
     }
     private void moveToTarget()
     {
+        if (IsAttack) {  
+            agent.SetDestination(transform.position); 
+            return; }
         if (target == null)
         { 
             agent.SetDestination(transform.position);
@@ -228,13 +236,18 @@ public class Monster : MonoBehaviour, Entity
                 while (target != null&&Vector3.Distance(transform.position, target.position) > attackDistance )
                 { 
                     yield return null; 
-                } 
+                }
             }
             // 공격 범위 안이면 공격 
-            if (target != null) Attack();
+            if (target != null)
+            {
+                IsAttack = true;
+                Attack();
+            }
             else continue;
             // 쿨타임 돌라가
-            yield return new WaitForSeconds(attackCoolingTime);  
+            yield return new WaitForSeconds(attackCoolingTime);
+            IsAttack=false;
         }
     }
     private void Attack()
@@ -244,6 +257,9 @@ public class Monster : MonoBehaviour, Entity
             TargetSelection();
         }
         if (target.GetComponent<Entity>()!=null)
+        { 
+            animator.SetTrigger("IsAttack");
             target.GetComponent<Entity>().Attacked(damageAmount);
+        }
     }  
 }

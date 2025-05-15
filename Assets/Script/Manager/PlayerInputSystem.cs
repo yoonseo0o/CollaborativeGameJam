@@ -58,12 +58,13 @@ public class PlayerInputSystem : MonoBehaviour
             { 
                 if(ActiveAbility == ActiveAbility.flash)
                 {
-                    flash.TurnOn(false);
+                    flash.Lower();
                     ActiveAbility = ActiveAbility.none; 
                 }
                 else
                 {
-                    ActiveAbility = ActiveAbility.flash; 
+                    ActiveAbility = ActiveAbility.flash;
+                    flash.Raise();
                     GameManager.Instance.StructureSystem.DeselectStructure();
                 }
             }
@@ -77,7 +78,7 @@ public class PlayerInputSystem : MonoBehaviour
                 else
                 {
                     ActiveAbility = ActiveAbility.structure;
-                    flash.TurnOn(false);
+                    flash.Lower();
                     GameManager.Instance.StructureSystem.SelectStructure();
                 }
             }

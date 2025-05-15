@@ -15,7 +15,7 @@ public class Flashlight : MonoBehaviour
     [SerializeField] private float attackDelay=0.2f;
     private List<Transform> monsters;
 
-
+    [SerializeField] private GameObject light;
     private int rangeLevel;
     private int brightnessLevel;
     private int distanceLevel;
@@ -29,33 +29,35 @@ public class Flashlight : MonoBehaviour
         SetDistanceLevel(0);
         SetRangeLevel(0); 
     }
-
-    public void Turn( )
+    public void Raise()
+    {
+        gameObject.SetActive(true);
+        TurnOn(false);
+    }
+    public void Lower()
+    {
+        TurnOn(false); 
+        gameObject.SetActive(false); 
+    }
+    public void Turn()
     {
         IsOn = !IsOn;
-        if (IsOn)
-        {
-            gameObject.SetActive(true);
-            InvokeRepeating("Attack", attackDelay, attackDelay);
-        }
-        else
-        {
-            CancelInvoke("Attack");
-            gameObject.SetActive(false);
-        }
+        TurnOn(IsOn); 
     }
     public void TurnOn(bool b)
     {
         IsOn = b;
         if (b)
         {
-            gameObject.SetActive(true);
+            //gameObject.SetActive(true);
+            light.SetActive(true);
             InvokeRepeating("Attack", attackDelay, attackDelay);
         }
         else
         {
             CancelInvoke("Attack");
-            gameObject.SetActive(false);
+            light.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
     private void Attack()
@@ -81,8 +83,8 @@ public class Flashlight : MonoBehaviour
     public void SetRangeLevel(int level)
     {
         rangeLevel = level;
-        range = GameManager.Instance.flashData.rangeDatas[rangeLevel].value; 
-        transform.localScale = new Vector3(range, transform.localScale.y, range);
+        range = GameManager.Instance.flashData.rangeDatas[rangeLevel].value;
+        light.transform.localScale = new Vector3(range, light.transform.localScale.y, range);
         Debug.Log($"범위 : {transform.localScale.x}");
     }
     public void SetBrightnessLevel(int level)
@@ -95,8 +97,8 @@ public class Flashlight : MonoBehaviour
     {
         distanceLevel = level;
         distance = GameManager.Instance.flashData.distanceDatas[distanceLevel].value;
-        transform.localPosition = new Vector3(0, 0, (distance - 0.5f) / 2 + 0.5f);
-        transform.localScale = new Vector3(transform.localScale.x, (distance - 0.5f) / 2, transform.localScale.z);
+        light.transform.localPosition = new Vector3(0, 0, (distance - 0.5f) / 2 + 0.5f);
+        light.transform.localScale = new Vector3(light.transform.localScale.x, (distance - 0.5f) / 2, light.transform.localScale.z);
 
         Debug.Log($"사거리 : {distance}");
     }
