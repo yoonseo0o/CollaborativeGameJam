@@ -5,7 +5,7 @@ public class StreetLamp : Structure/*,Interaction*/
 {
     [Header("ability")]
     [SerializeField] private Transform light;
-    private ParticleSystem lightEffect;
+    [SerializeField] private GameObject lightEffect; 
 
     [Header("Property")]
     private int power;
@@ -19,13 +19,19 @@ public class StreetLamp : Structure/*,Interaction*/
     private List<Entity> monsters;
     private bool IsDischarge; // 방전됐는지
     private bool IsAttack;
+
+    private int monsterLayer=6;
     private void Awake()
-    {
-        lightEffect = GetComponent<ParticleSystem>();
+    { 
         IsDischarge = false;
         IsAttack = false;
         data = GameManager.Instance.StreetLampManager.data; 
         monsters = new List<Entity>();
+        SetRangeLevel(GameManager.Instance.StreetLampManager.rangeLevel);
+        SetBrightnessLevel(GameManager.Instance.StreetLampManager.brightnessLevel);
+        SetPowerLevel(GameManager.Instance.StreetLampManager.powerLevel);
+        power = chargingLimit; 
+        luminescence(true); 
     }
     private void OnDestroy()
     {
@@ -36,7 +42,11 @@ public class StreetLamp : Structure/*,Interaction*/
         GameManager.Instance.StreetLampManager.streetLamps.Remove(this);
     }
     private void OnTriggerEnter(Collider other)
-    {
+    { 
+        if(other.gameObject.layer!= monsterLayer)
+        {
+            return;
+        }
         monsters.Add(other.GetComponent<Entity>());
         if (!IsDischarge&&!IsAttack)
         { 
@@ -46,6 +56,11 @@ public class StreetLamp : Structure/*,Interaction*/
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.layer != monsterLayer)
+        {
+            return;
+        } 
+
         monsters.Remove(other.GetComponent<Entity>());
         if (monsters.Count<=0)
         {
@@ -54,9 +69,8 @@ public class StreetLamp : Structure/*,Interaction*/
         }
     }
     public override void Ability()
-    {
-        if( lightEffect != null ) { 
-        lightEffect.Play();}
+    { 
+
     }
     /*void Interaction.interaction()
     { 
@@ -68,10 +82,17 @@ public class StreetLamp : Structure/*,Interaction*/
         List<Entity> deadMonsters=new List<Entity>();
         foreach (Entity m in monsters)
         {
-            if(m==null) continue;
+            if (m == null)
+            {
+                deadMonsters.Add(m);
+                continue;
+            }
 
             if(m.Attacked(brightness))
+            {
+                Debug.Log("죽였다!");
                 deadMonsters.Add(m);
+            }
         }
         foreach (var m in deadMonsters)
             monsters.Remove(m);
@@ -82,9 +103,9 @@ public class StreetLamp : Structure/*,Interaction*/
     /// </summary>
     void luminescence(bool IsOn)
     {
-        // IsOn대신 IsDischarge해줘도 될거 같고
-        // 발광 오브젝트 setactive (IsOn)
-        if(!IsOn&& IsAttack)
+        // IsOn대신 IsDischarge해줘도 될거 같고 
+        lightEffect.SetActive(IsOn);
+        if (!IsOn&& IsAttack)
         {
             IsAttack = false;
             CancelInvoke("Attack");
@@ -96,7 +117,7 @@ public class StreetLamp : Structure/*,Interaction*/
     /// <param name="value"></param>
     void PowerConsumption(int value)
     {
-        Debug.Log("전력 소비");
+        Debug.Log($"전력 소비 | 남은 전력 : {power}");
         power -= value;
         if(power <= 0 )
         {
