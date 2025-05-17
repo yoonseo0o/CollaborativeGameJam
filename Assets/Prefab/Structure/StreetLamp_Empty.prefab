@@ -127,6 +127,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: cd245e2a1f9447d41aed33131da0487c, type: 2}
   - {fileID: 2100000, guid: 03e4df3198dfee14788d6dc6d4453dad, type: 2}
   - {fileID: 2100000, guid: 03e4df3198dfee14788d6dc6d4453dad, type: 2}
+  meshRenderer: {fileID: 7602626606309944288}
+  meshRenderer2: {fileID: 7602626606309944288}
 --- !u!54 &6704009821073981758
 Rigidbody:
   m_ObjectHideFlags: 0

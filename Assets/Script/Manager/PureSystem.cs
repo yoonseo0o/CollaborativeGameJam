@@ -8,14 +8,14 @@ public class PureSystem : MonoBehaviour
     [SerializeField] private float interval;
     private void Start()
     {
-        pure = 20000; 
+        pure = 98; 
         GameManager.Instance.UIManager.UpdatePureCount(pure);
         AddPureOverTime();
     }
     public void GetPure()
     {
         pure ++;
-        GameManager.Instance.StructureSystem.CheckBuyability();
+        GameManager.Instance.StructureSystem.CheckBuyAbility();
         GameManager.Instance.UIManager.UpdatePureCount(pure);
     }
     public void GetPure(int amount)
@@ -24,13 +24,13 @@ public class PureSystem : MonoBehaviour
         if (pure >= maxPure) 
             pure = maxPure; 
 
-        GameManager.Instance.StructureSystem.CheckBuyability();
+        GameManager.Instance.StructureSystem.CheckBuyAbility();
         GameManager.Instance.UIManager.UpdatePureCount (pure);
     }
     public void LosePure(int amount)
     {
         pure -= amount;
-        GameManager.Instance.StructureSystem.CheckBuyability();
+        GameManager.Instance.StructureSystem.CheckBuyAbility();
         GameManager.Instance.UIManager.UpdatePureCount(pure);
     }
     private void AddPureOverTime()

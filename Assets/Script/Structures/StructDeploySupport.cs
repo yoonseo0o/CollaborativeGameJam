@@ -3,12 +3,12 @@ public enum DeploymentPossibility { possible, impossible, canBuy , cantBuy}
 public class StructDeploySupport : MonoBehaviour
 {
     [SerializeField] private Material[] materials;
-    private MeshRenderer meshRenderer;
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private MeshRenderer meshRenderer2;
     public DeploymentPossibility possibility { get; private set; }
     private int enterStructure;
     private void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
+    { 
         enterStructure = 0; 
     }
 
@@ -65,7 +65,8 @@ public class StructDeploySupport : MonoBehaviour
     private void changeMaterial()
     {
         if ((int)possibility >= materials.Length)
-            Debug.LogError("materials이 없음");
+            Debug.LogError("materials이 없음"); 
         meshRenderer.material = materials[(int)possibility];
+        meshRenderer2.material = materials[(int)possibility];
     }
 }

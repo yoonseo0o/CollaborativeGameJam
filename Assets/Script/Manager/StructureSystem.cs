@@ -45,7 +45,7 @@ public class StructureSystem : MonoBehaviour
             }
         }
         selectObj = Instantiate(EmptyStructureList[SelectIndex],transform);
-        CheckBuyability();
+        CheckBuyAbility();
         co = StartCoroutine(ReflectionLocation());
         GameManager.Instance.UIManager.ActiveSketchbook(true); 
         GameManager.Instance.UIManager.UpdateStructure(StructureList[SelectIndex].GetComponent<Structure>());
@@ -60,6 +60,7 @@ public class StructureSystem : MonoBehaviour
         }
         selectObj = null;
         GameManager.Instance.UIManager.ActiveSketchbook(false);
+        GameManager.Instance.UIManager.ActivePureLack(false);
     } 
     private IEnumerator ReflectionLocation()
     {
@@ -103,25 +104,27 @@ public class StructureSystem : MonoBehaviour
         DeselectStructure();
         return true;
     }
-    public void CheckBuyability()
+    public void CheckBuyAbility()
     { 
         if (selectObj == null) return;
-        // 선택 구조물이 구매 가능 상태라면
         if (StructureList[SelectIndex].GetComponent<Structure>() == null)
         {
             Debug.Log($"{StructureList[SelectIndex].name}가 null임 index : {SelectIndex}");
             return ;
         }
+        // 선택 구조물이 구매 가능 상태라면
         if (StructureList[SelectIndex].GetComponent<Structure>().pureCost
             <= GameManager.Instance.PureSystem.pure)
         {
             selectObj.transform.GetChild(0).GetComponent<StructDeploySupport>().
                 ChangePossibility(DeploymentPossibility.canBuy);
+            GameManager.Instance.UIManager.ActivePureLack(false); 
         }
         else
         {
             selectObj.transform.GetChild(0).GetComponent<StructDeploySupport >().
                 ChangePossibility(DeploymentPossibility.cantBuy);
+            GameManager.Instance.UIManager.ActivePureLack(true);
         }
     }
 }

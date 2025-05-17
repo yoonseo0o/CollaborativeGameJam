@@ -74,12 +74,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameOver by "+str);
         UIManager.GameOverPopUp(true);
+        CursorVisible(true);
         Time.timeScale = 0;
     }
     public void GameClear()
     {
         Debug.Log("GameClear!");
         UIManager.GameClearPopUp(true);
+        CursorVisible(true);
         Time.timeScale = 0;
     }
 }

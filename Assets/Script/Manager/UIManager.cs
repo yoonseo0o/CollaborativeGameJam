@@ -12,11 +12,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text structureName;
     [SerializeField] private TMP_Text structureDescription;
     [SerializeField] private Image structureImg;
+    [SerializeField] private Image[] playerHpEraser;
+    [SerializeField] private GameObject[] toolSlot;
 
+    
     [Header("PopUp")]
     [SerializeField] private GameObject gameClearPopUp;
     [SerializeField] private GameObject gameOverPopUp;
-    
+    [SerializeField] private GameObject pureLackPopUp;
+    [SerializeField] private GameObject descriptionStructure;
 
     [Header("Object")]
     [SerializeField] private GameObject sketchbook;
@@ -27,10 +31,20 @@ public class UIManager : MonoBehaviour
     {
         hpPlayer.value =   GameManager.Instance.playerMaxHp;
         hpLantern.value = GameManager.Instance.lanternMaxHp;
+
+
     }
     public void UpdatePlayerHP(int currentHp)
     {
         hpPlayer.value = (float)currentHp / GameManager.Instance.playerMaxHp;
+        for (int i = 0; i < currentHp; i++)
+        {
+            playerHpEraser[i].enabled = false;
+        }
+        for (int i = currentHp; i < playerHpEraser.Length; i++)
+        {
+            playerHpEraser[i].enabled = true;
+        }
     }
 
     public void UpdateLanternHP(int currentHp)
@@ -40,6 +54,27 @@ public class UIManager : MonoBehaviour
     public void UpdatePureCount(int count)
     {
         pureCount.text = count.ToString();
+    }
+    public void UpdateToolSlot(int state)
+    {
+        if( state <0 && state>= toolSlot.Length )
+        {
+            Debug.Log("index out range");
+            return;
+        }
+        foreach (var s in toolSlot)
+        {
+            s.SetActive(false);
+        }
+        toolSlot[state].SetActive(true);
+    }
+    public void ActivePureLack(bool IsActive)
+    {
+        pureLackPopUp.SetActive(IsActive);
+    }
+    public void ActiveDescriptionStructure(bool IsActive)
+    {
+        descriptionStructure.SetActive(IsActive);
     }
     public void ActiveSketchbook(bool IsActive)
     {
