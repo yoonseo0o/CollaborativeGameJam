@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,20 +39,47 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         
-        Cursor.visible = false;
+       /* Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
+*/
         playerMaxHp = 10;
         lanternMaxHp = 25;
+        Time.timeScale = 0;
+    }
+    public void GameStart()
+    {
+        CursorVisible(false);
+        Time.timeScale = 1;
+        MonsterSpawner.StartSpawn();
+    }
+    public void ReStart()
+    {
+        SceneManager.LoadScene(0);
+    }
+    public void CursorVisible(bool visible)
+    {
+
+        Cursor.visible = visible;
+        Cursor.lockState = visible? CursorLockMode.None : CursorLockMode.Locked;
+    }
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit(); // 어플리케이션 종료
+#endif
     }
     public void GameOver(string str)
     {
         Debug.Log("GameOver by "+str);
+        UIManager.GameOverPopUp(true);
         Time.timeScale = 0;
     }
     public void GameClear()
     {
         Debug.Log("GameClear!");
+        UIManager.GameClearPopUp(true);
         Time.timeScale = 0;
     }
 }

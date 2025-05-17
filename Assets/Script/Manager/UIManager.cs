@@ -13,8 +13,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text structureDescription;
     [SerializeField] private Image structureImg;
 
+    [Header("PopUp")]
+    [SerializeField] private GameObject gameClearPopUp;
+    [SerializeField] private GameObject gameOverPopUp;
+    
+
     [Header("Object")]
     [SerializeField] private GameObject sketchbook;
+
 
 
     private void Start()
@@ -55,5 +61,13 @@ public class UIManager : MonoBehaviour
         structureName.text = s.name;
         structureDescription.text = $"{s.description}\\n 소모 동심 {s.pureCost}";
         //structureImg.sprite = s.img;
+    }
+    public void GameClearPopUp(bool IsActive)
+    {
+        gameClearPopUp.SetActive(IsActive);
+    }
+    public void GameOverPopUp(bool IsActive)
+    {
+        gameOverPopUp.SetActive(IsActive);
     }
 }

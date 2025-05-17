@@ -21,11 +21,13 @@ public class StreetLamp : Structure/*,Interaction*/
     private bool IsAttack;
 
     private int monsterLayer=6;
+    static List<Entity> deadMonsters;
     private void Awake()
     { 
         IsDischarge = false;
         IsAttack = false;
         data = GameManager.Instance.StreetLampManager.data; 
+        deadMonsters = new List<Entity>();
         monsters = new List<Entity>();
         SetRangeLevel(GameManager.Instance.StreetLampManager.rangeLevel);
         SetBrightnessLevel(GameManager.Instance.StreetLampManager.brightnessLevel);
@@ -79,7 +81,6 @@ public class StreetLamp : Structure/*,Interaction*/
     void Attack()
     {
         Debug.Log("공격!!");
-        List<Entity> deadMonsters=new List<Entity>();
         foreach (Entity m in monsters)
         {
             if (m == null)
@@ -92,10 +93,14 @@ public class StreetLamp : Structure/*,Interaction*/
             {
                 Debug.Log("죽였다!");
                 deadMonsters.Add(m);
+                // deadMonsters 는 ... Remove를 안해서 stack overflow 걸릴거 같음. heap이구나 
+
             }
         }
         foreach (var m in deadMonsters)
+        {
             monsters.Remove(m);
+        }
         PowerConsumption(powerConsumptionAmount);
     }
     /// <summary>

@@ -72,9 +72,8 @@ public class StructureSystem : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, ~(structureEmptyLayer | MonsterLayer)))
                 if ((1 << hit.transform.gameObject.layer) == groundLayer)
                 {
-                    //Debug.Log(hit.transform.name);
                     selectObj.transform.position = hit.point;
-                }
+                } 
             yield return null;
         }
     }
