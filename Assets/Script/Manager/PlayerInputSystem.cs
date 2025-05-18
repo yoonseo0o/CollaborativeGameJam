@@ -43,8 +43,8 @@ public class PlayerInputSystem : MonoBehaviour
         abilityAction.Disable();
     }
     private void OnInteracted(InputAction.CallbackContext context)
-    { 
-
+    {
+        //Debug.Log("input¿¡¼­µµ Àß ¸ÔÇû½À´Ï´ç");
         interaction.OnInteract();
     } 
     private void OnSwitchAbilityPerformed(InputAction.CallbackContext context)

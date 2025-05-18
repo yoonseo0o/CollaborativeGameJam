@@ -57,7 +57,10 @@ public class GameManager : MonoBehaviour
         if (IsMonsterSpawn) MonsterSpawner.StartSpawn();
     }
     public void ReStart()
-    {
+    {    // GameManager Á÷Á¢ ÆÄ±«
+        Destroy(GameManager.Instance.gameObject);
+
+        // ¾À ´Ù½Ã ºÒ·¯¿À±â (¿¹: 0¹ø ¾À)
         SceneManager.LoadScene(0);
     }
     public void Pause(bool isPause  )
@@ -97,5 +100,5 @@ public class GameManager : MonoBehaviour
     {
         if (difficulty < 0 && difficulty > 5) return;
         Difficulty = difficulty;
-    }
+    } 
 }
