@@ -33,6 +33,7 @@ public class Flashlight : MonoBehaviour
     {
         gameObject.SetActive(true);
         TurnOn(false);
+        Debug.Log("끄기");
     }
     public void Lower()
     {
@@ -46,12 +47,13 @@ public class Flashlight : MonoBehaviour
     }
     public void TurnOn(bool b)
     {
+        Debug.Log("키기");
         IsOn = b;
         if (b)
         {
             //gameObject.SetActive(true);
             light.SetActive(true);
-            InvokeRepeating("Attack", attackDelay, attackDelay);
+            //InvokeRepeating("Attack", attackDelay, attackDelay);
         }
         else
         {
@@ -62,8 +64,13 @@ public class Flashlight : MonoBehaviour
     }
     private void Attack()
     {
+        Debug.Log($"Attack()  {monsters.Count}마리");
         if (!IsOn)
+        {
+
+            Debug.Log("꺼져있음" );
             return;
+        }
         Vector3 thisPos = Camera.main.transform.position; 
         List<Transform> deadMonsters = new List<Transform>();
         foreach (var m in monsters)
@@ -72,8 +79,8 @@ public class Flashlight : MonoBehaviour
             Debug.Log(m.name);
             float distanceToTarget = Vector3.Distance(transform.position, m.transform.position);
             float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
-            int damageAmount = Mathf.RoundToInt(ratio * brightness);
-
+            int damageAmount = Mathf.RoundToInt(ratio * brightness)+1;
+            Debug.Log($"공격 {monsters.Count}마리에게 {damageAmount}데미지  ");
             // 공격 후, 죽었으면 삭제
             if (m.GetComponent<Entity>().Attacked(damageAmount))
                 deadMonsters.Add(m);
@@ -178,10 +185,20 @@ public class Flashlight : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        bool StartAttack=false;
+        if(monsters.Count == 0) { StartAttack = true; }
+        Debug.Log($"{other.name}이 enter");
         monsters.Add(other.transform);
+        if(StartAttack)
+            InvokeRepeating("Attack", attackDelay, attackDelay);
     }
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log($"{other.name}이 exit");
         monsters.Remove(other.transform);
+        if (monsters.Count <= 0)
+        {
+            CancelInvoke("Attack");
+        }
     }
 }

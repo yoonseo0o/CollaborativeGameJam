@@ -19,14 +19,16 @@ public class GameManager : MonoBehaviour
     public StructureSystem StructureSystem;
     public PlayerInputSystem PlayerInputSystem;
     public SunSystem SunSystem;
+    [Header("Data")]
+    public FlashData flashData;
 
     [Header("")]
     public MonsterSpawner MonsterSpawner;
     public Transform playerTrf;
-    public Transform lanternTrf; 
+    public Transform lanternTrf;
+    [SerializeField] private bool IsMonsterSpawn;
+    
 
-    [Header("Data")]
-    public FlashData flashData;
     public int playerMaxHp { get; private set; }
     public int lanternMaxHp { get; private set; }
     void Awake()
@@ -50,7 +52,7 @@ public class GameManager : MonoBehaviour
     {
         CursorVisible(false);
         Time.timeScale = 1;
-        //MonsterSpawner.StartSpawn();
+        if (IsMonsterSpawn) MonsterSpawner.StartSpawn();
     }
     public void ReStart()
     {

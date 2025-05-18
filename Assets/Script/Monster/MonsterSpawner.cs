@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    public float spawnInterval { get; private set; } = 5;
+    public float spawnInterval { get; private set; } = 20;
     private int spawnType; //?
     public int spawnAmount { get; private set; } = 2;
     private Transform playerTrf;
