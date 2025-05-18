@@ -29,6 +29,7 @@ public class Monster : MonoBehaviour, Entity
 
     [SerializeField ] private Animator animator;
     Coroutine stanbyAttackCo;
+    static bool IsDead;
 
     void Awake()
     {
@@ -39,6 +40,7 @@ public class Monster : MonoBehaviour, Entity
         if (animator == null)
             Debug.LogError("animator is null");
         IsAttack = false;
+        IsDead = false;
     }
     void Start()
     { 
@@ -96,11 +98,13 @@ public class Monster : MonoBehaviour, Entity
         }
     }
     bool Entity.Attacked(int damageAmount)
-    { 
+    {
+        if (IsDead) return true;
         hp -= damageAmount;
         if (hp<=0)
         {
-            ((Entity)this).Dead();
+            ((Entity)this).Dead(); 
+            IsDead = true;
             return true;
         }
         else { return false; }

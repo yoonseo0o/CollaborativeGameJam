@@ -26,12 +26,15 @@ public class MonsterSpawner : MonoBehaviour
     {
         playerTrf = GameManager.Instance.playerTrf;
         lanternTrf = GameManager.Instance.lanternTrf;
-        co = StartCoroutine(MonsterSpawnInterval());
     }
     private void OnDestroy()
     {
         if(co!=null) StopCoroutine(co);
     }
+    public void StartSpawn()
+    {
+        co = StartCoroutine(MonsterSpawnInterval());
+    } 
     public void SetSpawnOption(float interval,int amount)
     {
         spawnInterval = interval;

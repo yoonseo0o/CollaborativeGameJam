@@ -59,13 +59,12 @@ public class PlayerInputSystem : MonoBehaviour
                 if(ActiveAbility == ActiveAbility.flash)
                 {
                     flash.Lower();
-                    ActiveAbility = ActiveAbility.none; 
+                    ActiveAbility = ActiveAbility.none;
                 }
                 else
                 {
                     ActiveAbility = ActiveAbility.flash;
                     flash.Raise();
-                    GameManager.Instance.StructureSystem.DeselectStructure();
                 }
             }
             else if (keyControl.keyCode == Key.Digit2)
@@ -73,14 +72,30 @@ public class PlayerInputSystem : MonoBehaviour
                 if (ActiveAbility == ActiveAbility.structure)
                 {
                     ActiveAbility = ActiveAbility.none;
-                    GameManager.Instance.StructureSystem.DeselectStructure();
                 }
                 else
                 {
                     ActiveAbility = ActiveAbility.structure;
                     flash.Lower();
-                    GameManager.Instance.StructureSystem.SelectStructure();
                 }
+            }
+            switch(activeAbility)
+            {
+                case ActiveAbility.none:
+                    GameManager.Instance.UIManager.UpdateToolSlot(0);
+                    GameManager.Instance.UIManager.ActiveDescriptionStructure(false);
+                    GameManager.Instance.StructureSystem.DeselectStructure();
+                    break;
+                case ActiveAbility.flash:
+                    GameManager.Instance.UIManager.UpdateToolSlot(1);
+                    GameManager.Instance.UIManager.ActiveDescriptionStructure(false);
+                    GameManager.Instance.StructureSystem.DeselectStructure();
+                    break;
+                case ActiveAbility.structure:
+                    GameManager.Instance.UIManager.UpdateToolSlot(2);
+                    GameManager.Instance.UIManager.ActiveDescriptionStructure(true);
+                    GameManager.Instance.StructureSystem.SelectStructure();
+                    break;
             }
         }
         else if (buttonControl != null)
