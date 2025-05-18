@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
         hpPlayer.value = (float)currentHp / GameManager.Instance.playerMaxHp;
         for (int i = 0; i < currentHp; i++)
         {
+            if (i >= playerHpEraser.Length) return;
             playerHpEraser[i].enabled = false;
         }
         for (int i = currentHp; i < playerHpEraser.Length; i++)

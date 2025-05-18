@@ -69,6 +69,7 @@ public class Flashlight : MonoBehaviour
         foreach (var m in monsters)
         { 
             if( m ==null ) continue;
+            Debug.Log(m.name);
             float distanceToTarget = Vector3.Distance(transform.position, m.transform.position);
             float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
             int damageAmount = Mathf.RoundToInt(ratio * brightness);
@@ -78,7 +79,8 @@ public class Flashlight : MonoBehaviour
                 deadMonsters.Add(m);
         }
         foreach (var m in deadMonsters)
-            monsters.Remove(m); 
+            monsters.Remove(m);
+        deadMonsters.Clear();
     }
     public void SetRangeLevel(int level)
     {

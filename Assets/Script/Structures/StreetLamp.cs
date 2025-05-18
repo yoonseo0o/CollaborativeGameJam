@@ -21,19 +21,20 @@ public class StreetLamp : Structure/*,Interaction*/
     private bool IsAttack;
 
     private int monsterLayer=6;
-    static List<Entity> deadMonsters;
+    static int id;
+    int myId;
     private void Awake()
     { 
         IsDischarge = false;
         IsAttack = false;
-        data = GameManager.Instance.StreetLampManager.data; 
-        deadMonsters = new List<Entity>();
+        data = GameManager.Instance.StreetLampManager.data;  
         monsters = new List<Entity>();
         SetRangeLevel(GameManager.Instance.StreetLampManager.rangeLevel);
         SetBrightnessLevel(GameManager.Instance.StreetLampManager.brightnessLevel);
         SetPowerLevel(GameManager.Instance.StreetLampManager.powerLevel);
         power = chargingLimit; 
-        luminescence(true); 
+        luminescence(true);
+        myId = ++id;
     }
     private void OnDestroy()
     {
@@ -49,6 +50,7 @@ public class StreetLamp : Structure/*,Interaction*/
         {
             return;
         }
+        Debug.Log($"{myId} : enter " +other.name);
         monsters.Add(other.GetComponent<Entity>());
         if (!IsDischarge&&!IsAttack)
         { 
@@ -58,11 +60,13 @@ public class StreetLamp : Structure/*,Interaction*/
     }
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log(other.gameObject.name+":" + other.gameObject.layer+ "=="+monsterLayer+"?"+ (other.gameObject.layer == monsterLayer));
         if (other.gameObject.layer != monsterLayer)
         {
+            Debug.Log("같은 레이엉 아니야");
             return;
-        } 
-
+        }
+        Debug.Log($"{myId} : exit " + (other.name));
         monsters.Remove(other.GetComponent<Entity>());
         if (monsters.Count<=0)
         {
@@ -80,28 +84,38 @@ public class StreetLamp : Structure/*,Interaction*/
     }*/
     void Attack()
     {
-        Debug.Log("공격!!");
+        Debug.Log($"{myId} : monster count {monsters.Count}");
+            List<Entity> deadMonsters = new List<Entity>();
         foreach (Entity m in monsters)
         {
             if (m == null)
             {
+                Debug.Log($"{m}이 null -> deadMonsters.add");
                 deadMonsters.Add(m);
                 continue;
             }
 
             if(m.Attacked(brightness))
             {
-                Debug.Log("죽였다!");
+                Debug.Log($"{myId} : 죽였다!");
                 deadMonsters.Add(m);
                 // deadMonsters 는 ... Remove를 안해서 stack overflow 걸릴거 같음. heap이구나 
 
             }
+            PowerConsumption(powerConsumptionAmount);
         }
         foreach (var m in deadMonsters)
         {
             monsters.Remove(m);
+                Debug.Log($"{m} monsters에서 삭제 중. ");
         }
-        PowerConsumption(powerConsumptionAmount);
+        deadMonsters.Clear();
+                if (monsters.Count <= 0)
+                {
+                    Debug.Log($"{myId} : monster count {monsters.Count}");
+                    IsAttack = false;
+            CancelInvoke("Attack");
+        }
     }
     /// <summary>
     /// 발광
@@ -122,7 +136,7 @@ public class StreetLamp : Structure/*,Interaction*/
     /// <param name="value"></param>
     void PowerConsumption(int value)
     {
-        Debug.Log($"전력 소비 | 남은 전력 : {power}");
+        Debug.Log($"{myId} : 전력 소비 | 남은 전력 : {power}");
         power -= value;
         if(power <= 0 )
         {
