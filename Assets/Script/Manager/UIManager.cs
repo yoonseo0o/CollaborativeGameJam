@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour
         }
         for (int i = currentHp; i < playerHpEraser.Length; i++)
         {
+            if (i >= playerHpEraser.Length) return;
             playerHpEraser[i].enabled = true;
         }
     }

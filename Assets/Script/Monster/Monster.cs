@@ -35,8 +35,7 @@ public class Monster : MonoBehaviour, Entity
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
-        structuresInRange = new List<Transform>();
-        animator=transform.GetChild(0).GetComponent<Animator>();
+        structuresInRange = new List<Transform>(); 
         if (animator == null)
             Debug.LogError("animator is null");
         IsAttack = false;

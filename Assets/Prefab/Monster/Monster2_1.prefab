@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4.25, y: 4.25, z: 4.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4412855418063838536}
   m_Father: {fileID: 0}
@@ -48,15 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e103534115f29c1449d989d3f06609ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
-  speed: 3
-  damageAmount: 1
-  pureValue: 2
+  hp: 25
+  speed: 7
+  damageAmount: 3
+  pureValue: 5
   type: 0
   attackCoolingTime: 2
   attackDistance: 1.3
   target: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 8181331329646001575}
 --- !u!195 &3035228630442729690
 NavMeshAgent:
   m_ObjectHideFlags: 0
