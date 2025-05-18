@@ -55,7 +55,6 @@ public class Monster : MonoBehaviour, Entity
     {
         if(stanbyAttackCo != null)
             StopCoroutine(stanbyAttackCo);
-        GameManager.Instance.MonsterManager.Remove(this);
     }
     void Update()
     {
@@ -100,8 +99,7 @@ public class Monster : MonoBehaviour, Entity
     bool Entity.Attacked(int damageAmount)
     {
         if (IsDead) { Debug.Log($"죽어있는뎅 : {hp}"); return true; }
-        hp -= damageAmount;
-        Debug.Log($"아야 {damageAmount}맞아서 {hp}피 남았다");
+        hp -= damageAmount; 
         if (hp<=0)
         {
             ((Entity)this).Dead(); 
@@ -114,6 +112,7 @@ public class Monster : MonoBehaviour, Entity
     {
         collider.enabled = false;
         GameManager.Instance.PureSystem.GetPure(pureValue);
+        GameManager.Instance.MonsterManager.Remove(this);
         Destroy(gameObject);
     }
     public void TargetSelection()

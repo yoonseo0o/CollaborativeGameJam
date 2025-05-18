@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -19,6 +20,10 @@ public class Flashlight : MonoBehaviour
     private int rangeLevel;
     private int brightnessLevel;
     private int distanceLevel;
+
+    [Header(" ")] // loock at lmap -> charging
+    private LayerMask LampLight;
+    private Coroutine lookatCo;
     private void Awake()
     {
         IsOn = gameObject.activeSelf;
@@ -27,7 +32,9 @@ public class Flashlight : MonoBehaviour
             
         SetBrightnessLevel(0);
         SetDistanceLevel(0);
-        SetRangeLevel(0); 
+        SetRangeLevel(0);
+
+        LampLight = 1 << 10;
     }
     public void Raise()
     {
@@ -75,7 +82,7 @@ public class Flashlight : MonoBehaviour
         List<Transform> deadMonsters = new List<Transform>();
         foreach (var m in monsters)
         { 
-            if( m ==null ) continue;
+            if( m ==null ||m.GetComponent<Entity>()==null) continue;
             Debug.Log(m.name);
             float distanceToTarget = Vector3.Distance(transform.position, m.transform.position);
             float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
@@ -182,9 +189,23 @@ public class Flashlight : MonoBehaviour
             GameManager.Instance.lanternTrf.GetComponent<Lantern>().CanvasSetActive(false);
 
         }
+    } 
+    private IEnumerator CheckLookAtLamp(StreetLamp lamp)
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(1f);
+            lamp.Charging(); 
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.layer);
+        if (1<<other.gameObject.layer == (int)LampLight)
+        {
+            lookatCo = StartCoroutine(CheckLookAtLamp(other.transform.parent.GetComponent<StreetLamp>()));
+            return;
+        }
         bool StartAttack=false;
         if(monsters.Count == 0) { StartAttack = true; }
         Debug.Log($"{other.name}ÀÌ enter");
@@ -194,6 +215,12 @@ public class Flashlight : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        if (1 << other.gameObject.layer == (int)LampLight)
+        {
+            if(lookatCo!=null)
+                StopCoroutine(lookatCo);
+            return;
+        }
         Debug.Log($"{other.name}ÀÌ exit");
         monsters.Remove(other.transform);
         if (monsters.Count <= 0)

@@ -12,7 +12,10 @@ public class SunSystem : MonoBehaviour
     [SerializeField] private int amountMag;
     [Header("해의 조각 활성화 상태 공격 ")]
     [SerializeField] private float interval=0.25f;
-    [SerializeField] private int damageAmountOfAPiece=1; 
+    [SerializeField] private int damageAmountOfAPiece=1;
+    [Header("해의 조각 리소스 ")]
+    [SerializeField] private Material[] CenterPieceOfTheSunResource;
+    [SerializeField] private MeshRenderer CenterPieceOfTheSunMeshRenderer;
     void Awake()
     {
         IsTime = false;
@@ -77,14 +80,14 @@ public class SunSystem : MonoBehaviour
     private void UpdatePieceImg()
     {
         Debug.Log("랜턴 위에 있는 해의 조각 이미지 업데이트해야돼요 - 미구현");
+        CenterPieceOfTheSunMeshRenderer.material = CenterPieceOfTheSunResource[4 - DeactivePieceCount];
     }
     private void AttackActivePiece()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 15f, LayerMask.GetMask("Monster"));
         Debug.Log($"해의 조각 활성화 상태 공격@!!@ {hitColliders.Length}"); 
         foreach (var hit in hitColliders)
-        {
-            Debug.Log(hit.GetComponent<Entity>()==null ? $"{hit.name}왜없냐" : $"{hit.name}있지");
+        { 
             hit.GetComponent<Entity>()?.Attacked(damageAmountOfAPiece * (4 - DeactivePieceCount));
         }  
 
