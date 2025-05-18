@@ -61,7 +61,7 @@ public class SunSystem : MonoBehaviour
     }
     public void ActivePiece()
     {
-        Debug.Log("해의 조각 활성화!@@!!@!@");
+        //Debug.Log("해의 조각 활성화!@@!!@!@");
         DeactivePieceCount--;
         if(pieceTrf != null )
         {
@@ -70,7 +70,7 @@ public class SunSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("해의 조각 활성화 하려고 하는데 null이에요");
+            //Debug.Log("해의 조각 활성화 하려고 하는데 null이에요");
         }
         if(DeactivePieceCount <= 0)
         {
@@ -79,13 +79,12 @@ public class SunSystem : MonoBehaviour
     }
     private void UpdatePieceImg()
     {
-        Debug.Log("랜턴 위에 있는 해의 조각 이미지 업데이트해야돼요 - 미구현");
+        //Debug.Log("랜턴 위에 있는 해의 조각 이미지 업데이트해야돼요 - 구현");
         CenterPieceOfTheSunMeshRenderer.material = CenterPieceOfTheSunResource[4 - DeactivePieceCount];
     }
     private void AttackActivePiece()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 15f, LayerMask.GetMask("Monster"));
-        Debug.Log($"해의 조각 활성화 상태 공격@!!@ {hitColliders.Length}"); 
         foreach (var hit in hitColliders)
         { 
             hit.GetComponent<Entity>()?.Attacked(damageAmountOfAPiece * (4 - DeactivePieceCount));

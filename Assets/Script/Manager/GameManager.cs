@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public StructureSystem StructureSystem;
     public PlayerInputSystem PlayerInputSystem;
     public SunSystem SunSystem;
+    public CutScene CutScene;
     [Header("Data")]
     public FlashData flashData;
 
@@ -49,6 +50,10 @@ public class GameManager : MonoBehaviour
         lanternMaxHp = 25;
         Time.timeScale = 0;
         Difficulty = 1;
+    }
+    public void ShowStartCutScene()
+    {
+        CutScene.ActiveImg(true);
     }
     public void GameStart()
     {
