@@ -10897,6 +10897,55 @@ RectTransform:
   m_AnchoredPosition: {x: -12.599991, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &484071526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 484071527}
+  - component: {fileID: 484071529}
+  m_Layer: 0
+  m_Name: SunSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &484071527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484071526}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 5.38, y: 4.1, z: 1.31}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 513392801}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &484071529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484071526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68547737bf9307a488b0215f631d6046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeactivePieceCount: 0
+  intervalMag: 0.33
+  amountMag: 1
+  interval: 0.25
+  damageAmountOfAPiece: 1
 --- !u!1001 &486686902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11461,7 +11510,6 @@ GameObject:
   - component: {fileID: 513392800}
   - component: {fileID: 513392802}
   - component: {fileID: 513392803}
-  - component: {fileID: 513392804}
   - component: {fileID: 513392805}
   - component: {fileID: 513392806}
   m_Layer: 0
@@ -11489,13 +11537,12 @@ MonoBehaviour:
   PureSystem: {fileID: 513392803}
   StructureSystem: {fileID: 1619058011}
   PlayerInputSystem: {fileID: 1825550429}
-  SunSystem: {fileID: 513392804}
+  SunSystem: {fileID: 484071529}
   flashData: {fileID: 1083342195}
   MonsterSpawner: {fileID: 1940918597}
   playerTrf: {fileID: 149952518}
   lanternTrf: {fileID: 1790045863}
   IsMonsterSpawn: 1
-  Difficulty: 0
 --- !u!4 &513392801
 Transform:
   m_ObjectHideFlags: 0
@@ -11510,6 +11557,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1619058012}
+  - {fileID: 484071527}
   - {fileID: 1083342194}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11565,21 +11613,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interval: 5
---- !u!114 &513392804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 513392799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68547737bf9307a488b0215f631d6046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActivePieceCount: 0
-  intervalMag: 0.33
-  amountMag: 1
 --- !u!114 &513392805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25683,6 +25716,78 @@ MonoBehaviour:
     monster2_1Amount: 4
     monster2_2Amount: 2
     monster3_1Amount: 2
+    monster3_2Amount: 0
+  - id: 6
+    difficulty: 3
+    monster1_1Amount: 0
+    monster1_2Amount: 6
+    monster2_1Amount: 2
+    monster2_2Amount: 5
+    monster3_1Amount: 1
+    monster3_2Amount: 0
+  - id: 7
+    difficulty: 3
+    monster1_1Amount: 6
+    monster1_2Amount: 4
+    monster2_1Amount: 0
+    monster2_2Amount: 6
+    monster3_1Amount: 0
+    monster3_2Amount: 1
+  - id: 8
+    difficulty: 3
+    monster1_1Amount: 3
+    monster1_2Amount: 3
+    monster2_1Amount: 3
+    monster2_2Amount: 3
+    monster3_1Amount: 0
+    monster3_2Amount: 0
+  - id: 9
+    difficulty: 4
+    monster1_1Amount: 0
+    monster1_2Amount: 4
+    monster2_1Amount: 3
+    monster2_2Amount: 8
+    monster3_1Amount: 1
+    monster3_2Amount: 1
+  - id: 10
+    difficulty: 4
+    monster1_1Amount: 5
+    monster1_2Amount: 5
+    monster2_1Amount: 0
+    monster2_2Amount: 5
+    monster3_1Amount: 0
+    monster3_2Amount: 1
+  - id: 11
+    difficulty: 4
+    monster1_1Amount: 0
+    monster1_2Amount: 5
+    monster2_1Amount: 5
+    monster2_2Amount: 3
+    monster3_1Amount: 1
+    monster3_2Amount: 0
+  - id: 12
+    difficulty: 5
+    monster1_1Amount: 0
+    monster1_2Amount: 5
+    monster2_1Amount: 4
+    monster2_2Amount: 8
+    monster3_1Amount: 2
+    monster3_2Amount: 1
+  - id: 13
+    difficulty: 5
+    monster1_1Amount: 6
+    monster1_2Amount: 6
+    monster2_1Amount: 3
+    monster2_2Amount: 5
+    monster3_1Amount: 1
+    monster3_2Amount: 2
+  - id: 6
+    difficulty: 3
+    monster1_1Amount: 0
+    monster1_2Amount: 6
+    monster2_1Amount: 2
+    monster2_2Amount: 5
+    monster3_1Amount: 1
     monster3_2Amount: 0
 --- !u!1001 &1093232154
 PrefabInstance:

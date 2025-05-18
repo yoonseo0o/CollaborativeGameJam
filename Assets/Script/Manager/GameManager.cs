@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public Transform playerTrf;
     public Transform lanternTrf;
     [SerializeField] private bool IsMonsterSpawn;
-    public int Difficulty;
+    public int Difficulty { get; private set; }
     
 
     public int playerMaxHp { get; private set; }
@@ -92,5 +92,10 @@ public class GameManager : MonoBehaviour
         UIManager.GameClearPopUp(true);
         CursorVisible(true);
         Time.timeScale = 0;
+    }
+    public void SetDifficulty(int difficulty)
+    {
+        if (difficulty < 0 && difficulty > 5) return;
+        Difficulty = difficulty;
     }
 }

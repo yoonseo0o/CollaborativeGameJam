@@ -1141,6 +1141,7 @@ MonoBehaviour:
   attackDistance: 1
   target: {fileID: 0}
   animator: {fileID: 8956335630421326001}
+  collider: {fileID: 52564932160904885}
 --- !u!195 &4532537377542069194
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -28,8 +28,9 @@ public class Monster : MonoBehaviour, Entity
 
 
     [SerializeField ] private Animator animator;
+    [SerializeField] private Collider collider;
     Coroutine stanbyAttackCo;
-    static bool IsDead;
+    bool IsDead;
 
     void Awake()
     {
@@ -98,8 +99,9 @@ public class Monster : MonoBehaviour, Entity
     }
     bool Entity.Attacked(int damageAmount)
     {
-        if (IsDead) return true;
+        if (IsDead) { Debug.Log($"죽어있는뎅 : {hp}"); return true; }
         hp -= damageAmount;
+        Debug.Log($"아야 {damageAmount}맞아서 {hp}피 남았다");
         if (hp<=0)
         {
             ((Entity)this).Dead(); 
@@ -110,6 +112,7 @@ public class Monster : MonoBehaviour, Entity
     }
     void Entity.Dead()
     {
+        collider.enabled = false;
         GameManager.Instance.PureSystem.GetPure(pureValue);
         Destroy(gameObject);
     }
