@@ -50,11 +50,16 @@ public class GameManager : MonoBehaviour
     {
         CursorVisible(false);
         Time.timeScale = 1;
-        MonsterSpawner.StartSpawn();
+        //MonsterSpawner.StartSpawn();
     }
     public void ReStart()
     {
         SceneManager.LoadScene(0);
+    }
+    public void Pause(bool isPause  )
+    {
+
+        Time.timeScale = isPause?0:1;
     }
     public void CursorVisible(bool visible)
     {

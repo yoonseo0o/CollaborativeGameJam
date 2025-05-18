@@ -11,6 +11,7 @@ public class Lantern : MonoBehaviour, Entity, Interaction
     private float range;
     [SerializeField] private int playerHealTime;
     [SerializeField] private GameObject canvas;
+    [SerializeField] private GameObject canvasParent;
 
     [SerializeField] private Transform rangeTrf;
 
@@ -47,8 +48,8 @@ public class Lantern : MonoBehaviour, Entity, Interaction
     }
     void CanvasLookAt()
     {
-        canvas.transform.LookAt(Camera.main.transform);
-        canvas.transform.Rotate(0, 180f, 0);
+        canvasParent.transform.LookAt(Camera.main.transform);
+        canvasParent.transform.Rotate(0, 180f, 0);
     }
     void CanvasOnClick(InputAction.CallbackContext context)
     { 

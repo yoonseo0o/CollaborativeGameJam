@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameClearPopUp;
     [SerializeField] private GameObject gameOverPopUp;
     [SerializeField] private GameObject pureLackPopUp;
+    [SerializeField] private GameObject ESCPopUp;
     [SerializeField] private GameObject descriptionStructure;
 
     [Header("Object")]
@@ -73,6 +74,16 @@ public class UIManager : MonoBehaviour
     public void ActivePureLack(bool IsActive)
     {
         pureLackPopUp.SetActive(IsActive);
+        Invoke("ActiveFalsePureLack", 1f);
+    }
+    public void ActiveFalsePureLack( )
+    {
+        pureLackPopUp.SetActive(false);
+    }
+    public void ActiveESCPopUp(bool IsActive)
+    {
+        ESCPopUp.SetActive(IsActive);
+        GameManager.Instance.Pause(IsActive);
     }
     public void ActiveDescriptionStructure(bool IsActive)
     {

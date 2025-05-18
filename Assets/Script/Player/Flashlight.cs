@@ -112,10 +112,12 @@ public class Flashlight : MonoBehaviour
             return;
         }
         // 손전등 데이터의 필요 코스트가 없다면 
-        if (GameManager.Instance.flashData.rangeDatas[rangeLevel].pureCost >
-            GameManager.Instance.PureSystem.pure)
+        if (GameManager.Instance.PureSystem.IsPureLack
+            (GameManager.Instance.flashData.rangeDatas[rangeLevel].pureCost))
         {
+            
             Debug.Log($"필요 동심 부족 {GameManager.Instance.flashData.rangeDatas[rangeLevel].pureCost-GameManager.Instance.PureSystem.pure} 동심이 더 필요합니다");
+            GameManager.Instance.UIManager.ActivePureLack(true);
             return;
         }
         else
@@ -138,7 +140,10 @@ public class Flashlight : MonoBehaviour
         // 손전등 데이터의 필요 코스트가 없다면 
         if (GameManager.Instance.flashData.brightnessDatas[brightnessLevel].pureCost >
             GameManager.Instance.PureSystem.pure)
+        {
+            GameManager.Instance.UIManager.ActivePureLack(true);
             return;
+        }
         else
         {
             GameManager.Instance.PureSystem.LosePure(GameManager.Instance.flashData.brightnessDatas[brightnessLevel].pureCost);
@@ -158,7 +163,11 @@ public class Flashlight : MonoBehaviour
         // 손전등 데이터의 필요 코스트가 없다면 
         if (GameManager.Instance.flashData.distanceDatas[distanceLevel].pureCost >
             GameManager.Instance.PureSystem.pure)
+        {
+            GameManager.Instance.UIManager.ActivePureLack(true);
             return;
+        }
+    
         else
         {
             GameManager.Instance.PureSystem.LosePure(GameManager.Instance.flashData.distanceDatas[distanceLevel].pureCost);

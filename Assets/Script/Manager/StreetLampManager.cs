@@ -22,6 +22,8 @@ public class StreetLampManager : MonoBehaviour
             GameManager.Instance.PureSystem.pure)
         {
             Debug.Log($"필요 동심 부족 {data.streetLampRangeData[rangeLevel].pureCost - GameManager.Instance.PureSystem.pure} 동심이 더 필요합니다");
+
+            GameManager.Instance.UIManager.ActivePureLack(true); 
             return;
         }
         else
@@ -50,6 +52,8 @@ public class StreetLampManager : MonoBehaviour
             GameManager.Instance.PureSystem.pure)
         {
             Debug.Log($"필요 동심 부족 {data.streetLampBrightnessData[brightnessLevel].pureCost - GameManager.Instance.PureSystem.pure} 동심이 더 필요합니다");
+
+            GameManager.Instance.UIManager.ActivePureLack(true);
             return;
         }
         else
@@ -78,6 +82,8 @@ public class StreetLampManager : MonoBehaviour
             GameManager.Instance.PureSystem.pure)
         {
             Debug.Log($"필요 동심 부족 {data.streetLampPowerData[powerLevel].pureCost - GameManager.Instance.PureSystem.pure} 동심이 더 필요합니다");
+
+            GameManager.Instance.UIManager.ActivePureLack(true); 
             return;
         }
         else

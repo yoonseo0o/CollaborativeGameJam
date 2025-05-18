@@ -33,6 +33,10 @@ public class PureSystem : MonoBehaviour
         GameManager.Instance.StructureSystem.CheckBuyAbility();
         GameManager.Instance.UIManager.UpdatePureCount(pure);
     }
+    public bool IsPureLack(int amount)
+    {
+        return amount > pure;
+    }
     private void AddPureOverTime()
     {
         InvokeRepeating("GetPure", interval, interval);

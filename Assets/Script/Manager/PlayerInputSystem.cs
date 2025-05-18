@@ -54,6 +54,11 @@ public class PlayerInputSystem : MonoBehaviour
         var axisControl = context.control as UnityEngine.InputSystem.Controls.Vector2Control; 
         if (keyControl != null)
         { 
+            if(keyControl.keyCode==Key.Escape)
+            {
+                GameManager.Instance.UIManager.ActiveESCPopUp(true);
+                return;
+            }
             if (keyControl.keyCode == Key.Digit1)
             { 
                 if(ActiveAbility == ActiveAbility.flash)
