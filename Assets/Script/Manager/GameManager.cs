@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         CursorVisible(false);
         Time.timeScale = 1;
-        MonsterSpawner.StartSpawn();
+        //MonsterSpawner.StartSpawn();
     }
     public void ReStart()
     {
