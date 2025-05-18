@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public Transform playerTrf;
     public Transform lanternTrf;
     [SerializeField] private bool IsMonsterSpawn;
+    public int Difficulty;
     
 
     public int playerMaxHp { get; private set; }
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         playerMaxHp = 10;
         lanternMaxHp = 25;
         Time.timeScale = 0;
+        Difficulty = 1;
     }
     public void GameStart()
     {

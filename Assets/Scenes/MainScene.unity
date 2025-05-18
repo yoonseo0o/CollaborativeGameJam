@@ -11495,6 +11495,7 @@ MonoBehaviour:
   playerTrf: {fileID: 149952518}
   lanternTrf: {fileID: 1790045863}
   IsMonsterSpawn: 1
+  Difficulty: 0
 --- !u!4 &513392801
 Transform:
   m_ObjectHideFlags: 0
@@ -11577,8 +11578,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActivePieceCount: 0
-  intervalMag: 0.5
-  amountMag: 2
+  intervalMag: 0.33
+  amountMag: 1
 --- !u!114 &513392805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25503,6 +25504,7 @@ GameObject:
   - component: {fileID: 1083342194}
   - component: {fileID: 1083342195}
   - component: {fileID: 1083342196}
+  - component: {fileID: 1083342197}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -25621,6 +25623,67 @@ MonoBehaviour:
     pureCost: 0
     chargingLimit: 300
     chargingValuePerSec: 100
+--- !u!114 &1083342197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083342192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee12f27b37ba8024bb0715c1083be192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnData:
+  - id: 0
+    difficulty: 1
+    monster1_1Amount: 4
+    monster1_2Amount: 4
+    monster2_1Amount: 2
+    monster2_2Amount: 0
+    monster3_1Amount: 0
+    monster3_2Amount: 0
+  - id: 1
+    difficulty: 1
+    monster1_1Amount: 3
+    monster1_2Amount: 3
+    monster2_1Amount: 4
+    monster2_2Amount: 0
+    monster3_1Amount: 0
+    monster3_2Amount: 0
+  - id: 2
+    difficulty: 1
+    monster1_1Amount: 6
+    monster1_2Amount: 2
+    monster2_1Amount: 2
+    monster2_2Amount: 0
+    monster3_1Amount: 0
+    monster3_2Amount: 0
+  - id: 3
+    difficulty: 2
+    monster1_1Amount: 5
+    monster1_2Amount: 3
+    monster2_1Amount: 2
+    monster2_2Amount: 3
+    monster3_1Amount: 0
+    monster3_2Amount: 0
+  - id: 4
+    difficulty: 2
+    monster1_1Amount: 2
+    monster1_2Amount: 6
+    monster2_1Amount: 2
+    monster2_2Amount: 0
+    monster3_1Amount: 0
+    monster3_2Amount: 0
+  - id: 5
+    difficulty: 2
+    monster1_1Amount: 0
+    monster1_2Amount: 5
+    monster2_1Amount: 4
+    monster2_2Amount: 2
+    monster3_1Amount: 2
+    monster3_2Amount: 0
 --- !u!1001 &1093232154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45450,6 +45513,9 @@ MonoBehaviour:
   - {fileID: 4468955257424408347, guid: d9d50ac563497a84a9fa1e4e8c6662cf, type: 3}
   - {fileID: 6238076624936118567, guid: 7cea821e4bd6d8b4abf5ea83f5d124e2, type: 3}
   - {fileID: 3270754936832250969, guid: ba91f9732bfb4564494c573d771e2dee, type: 3}
+  - {fileID: 8933327328153705406, guid: b8d887ad992ebf74580b3316736120c2, type: 3}
+  - {fileID: 1970890243833434582, guid: cc89f352011a9ea47ab650fd6b232bff, type: 3}
+  monsterSpawnData: {fileID: 1083342197}
   bigRadius1: 50
   bigRadius2: 50
   smallRadius1: 15
