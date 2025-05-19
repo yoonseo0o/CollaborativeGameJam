@@ -6,7 +6,7 @@ public class SunSystem : MonoBehaviour
     public int DeactivePieceCount;
     public Transform pieceTrf { get; private set; }
     public bool IsTime { get; private set; }
-    private int defenseSeconds = 1;
+    private int defenseSeconds = 60;
     [Header("해의 시간 - 몬스터 스폰 변화 배율")] 
     [SerializeField] private float intervalMag;
     [SerializeField] private int amountMag;

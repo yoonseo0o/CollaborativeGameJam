@@ -1,5 +1,7 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.UI.Image;
 
 public class PieceOfTheSun : MonoBehaviour, Interaction, Entity
@@ -12,6 +14,9 @@ public class PieceOfTheSun : MonoBehaviour, Interaction, Entity
     private Coroutine co;
     private int InteractionAvailableTime = 60;
     private bool IsInteractionAvailable;
+    [Header("연출")]
+    private float DistanceY=3f; 
+    private Coroutine moveCo;
     private void Start()
     {
         if (GameManager.Instance == null)
@@ -42,49 +47,21 @@ public class PieceOfTheSun : MonoBehaviour, Interaction, Entity
             return;
         Debug.Log("해의 조각 활성화 시도");
         co = StartCoroutine(GameManager.Instance.SunSystem.TimeOfTheSun(transform));
-    }
-    /*private IEnumerator TurnOn()
+        // 연출
+        if (moveCo != null) StopCoroutine(moveCo);
+        moveCo=StartCoroutine(moveToPos(transform.position+ Vector3.up* DistanceY,1f));
+    } 
+    private IEnumerator moveToPos(Vector3 pos,float speed)
+    {
+        while (Vector3.Magnitude(transform.position - pos) > 0.5f)
         {
-            if (IsActive)
-                yield return null ;
-            // 빛을 내기 시작함... 
-            // 60초 동안 많은 적들이.. (얼마나 많이..?)몰려오며, 해의 조각과 플레이어를 공격..
-            MonsterSpawner monsterSpawner = GameManager.Instance.MonsterSpawner;
-            float interval = monsterSpawner.spawnInterval;
-            int amount = monsterSpawner.spawnAmount;
-            monsterSpawner.SetSpawnOption(interval * 0.2f, amount);
-
-            // 60초 카운트 
-            // 파괴되지 않았을 시
-            yield return StartCoroutine(Defense60Time());
-            if ( )
-            {
-                IsActive = true;
-                light.SetActive(false);
-                remainFlagCount--;
-                if (remainFlagCount <= 0)
-                {
-                    GameManager.Instance.GameClear();
-                }
-            }
-            // 파괴 됐다면 원래 상태로
-            else
-            {
-                // 빛 끄기
-                hp = maxHp; 
-                monsterSpawner.SetSpawnOption(interval, amount);
-            }
+            Debug.Log("moveToPos");
+            transform.position = Vector3.MoveTowards(transform.position, pos, speed * Time.deltaTime);
+            yield return null;
         }
-        private IEnumerator Defense60Time()
-        {
-            bool IsDestruction = false;
-            int time = 60;
-            while (!IsDestruction&&time-->0)
-            {
-
-                yield return new WaitForSeconds(1f);
-            }
-        }*/
+        transform.position = pos;
+        moveCo = null;
+    }
     bool Entity.Attacked(int damageAmount)
     {
         if (!GameManager.Instance.SunSystem.IsTime)
@@ -124,13 +101,15 @@ public class PieceOfTheSun : MonoBehaviour, Interaction, Entity
     {
         Debug.Log("해의 조각 원상 복구");
         hp = maxHp;
+        if (moveCo != null) StopCoroutine(moveCo);
+        moveCo = StartCoroutine(moveToPos(transform.position - Vector3.up * DistanceY, 1f));
         IsActive = false;
         light.SetActive(true);
     }
     public void Active()
     {
-        // 랜턴 상단으로 위치 이동? 
-
+        if (moveCo != null) StopCoroutine(moveCo);
+        moveCo = StartCoroutine(moveToPos(GameManager.Instance.SunSystem.transform.position,6));
         light.SetActive(false);
         IsActive = true;
     }
