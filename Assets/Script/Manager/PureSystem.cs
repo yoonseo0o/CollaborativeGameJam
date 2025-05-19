@@ -8,7 +8,7 @@ public class PureSystem : MonoBehaviour
     [SerializeField] private float interval;
     private void Start()
     {
-        pure = 0; 
+        pure = 22222; 
         GameManager.Instance.UIManager.UpdatePureCount(pure);
         AddPureOverTime();
     }
