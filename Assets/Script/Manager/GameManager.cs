@@ -19,14 +19,18 @@ public class GameManager : MonoBehaviour
     public StructureSystem StructureSystem;
     public PlayerInputSystem PlayerInputSystem;
     public SunSystem SunSystem;
+    public CutScene CutScene;
+    [Header("Data")]
+    public FlashData flashData;
 
     [Header("")]
     public MonsterSpawner MonsterSpawner;
     public Transform playerTrf;
-    public Transform lanternTrf; 
+    public Transform lanternTrf;
+    [SerializeField] private bool IsMonsterSpawn;
+    public int Difficulty { get; private set; }
+    
 
-    [Header("Data")]
-    public FlashData flashData;
     public int playerMaxHp { get; private set; }
     public int lanternMaxHp { get; private set; }
     void Awake()
@@ -45,15 +49,23 @@ public class GameManager : MonoBehaviour
         playerMaxHp = 10;
         lanternMaxHp = 25;
         Time.timeScale = 0;
+        Difficulty = 1;
+    }
+    public void ShowStartCutScene()
+    {
+        CutScene.ActiveImg(true);
     }
     public void GameStart()
     {
         CursorVisible(false);
         Time.timeScale = 1;
-        //MonsterSpawner.StartSpawn();
+        if (IsMonsterSpawn) MonsterSpawner.StartSpawn();
     }
     public void ReStart()
-    {
+    {    // GameManager Á÷Á¢ ÆÄ±«
+        Destroy(GameManager.Instance.gameObject);
+
+        // ¾À ´Ù½Ã ºÒ·¯¿À±â (¿¹: 0¹ø ¾À)
         SceneManager.LoadScene(0);
     }
     public void Pause(bool isPause  )
@@ -89,4 +101,9 @@ public class GameManager : MonoBehaviour
         CursorVisible(true);
         Time.timeScale = 0;
     }
+    public void SetDifficulty(int difficulty)
+    {
+        if (difficulty < 0 && difficulty > 5) return;
+        Difficulty = difficulty;
+    } 
 }

@@ -24,6 +24,7 @@ public class PlayerInteraction : MonoBehaviour
     { 
         if (lookTarget != null)
         {
+            Debug.Log(lookTarget.name);
             lookTarget.GetComponent<Interaction>().interaction();
         } 
     }

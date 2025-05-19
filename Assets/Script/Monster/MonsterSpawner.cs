@@ -6,12 +6,13 @@ using Random = UnityEngine.Random;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    public float spawnInterval { get; private set; } = 5;
+    public float spawnInterval { get; private set; } = 20;
     private int spawnType; //?
     public int spawnAmount { get; private set; } = 2;
     private Transform playerTrf;
     private Transform lanternTrf;
     [SerializeField] GameObject[] monsters;
+    [SerializeField] private MonsterSpawnData monsterSpawnData;
 
     //spawnRange 
     public float bigRadius1 = 50f; // player
@@ -42,13 +43,16 @@ public class MonsterSpawner : MonoBehaviour
     }
     IEnumerator MonsterSpawnInterval()
     {
+        int diff = GameManager.Instance.Difficulty;
+        SpawnData data = monsterSpawnData.spawnData[Random.Range(diff * 3 - 3, diff * 3)];
         while (true)
-        {
-            int amount = spawnAmount;
-            while (amount-- > 0)
-            {
-                MonsterSpawn(Random.Range(0, monsters.Length), 1);
-            }
+        { 
+            MonsterSpawn(0, data.monster1_1Amount); 
+            MonsterSpawn(1, data.monster1_2Amount);
+            MonsterSpawn(2, data.monster2_1Amount);
+            MonsterSpawn(3, data.monster2_2Amount);
+            MonsterSpawn(4, data.monster3_1Amount);
+            MonsterSpawn(5, data.monster3_2Amount);
             yield return new WaitForSeconds(spawnInterval);
         }
     }

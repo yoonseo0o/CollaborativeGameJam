@@ -1,12 +1,9 @@
-using UnityEngine;
-using UnityEditor.AI;
-using UnityEngine.InputSystem;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
+using UnityEngine; 
+using UnityEngine.InputSystem; 
 using UnityEngine.Windows;
 using System.Collections;
 using static UnityEngine.UI.Image;
-using System.Drawing;
-using UnityEditor.PackageManager;
+using System.Drawing; 
 
 public class Player : MonoBehaviour, Entity
 {

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -19,6 +20,10 @@ public class Flashlight : MonoBehaviour
     private int rangeLevel;
     private int brightnessLevel;
     private int distanceLevel;
+
+    [Header(" ")] // loock at lmap -> charging
+    private LayerMask LampLight;
+    private Coroutine lookatCo;
     private void Awake()
     {
         IsOn = gameObject.activeSelf;
@@ -27,12 +32,15 @@ public class Flashlight : MonoBehaviour
             
         SetBrightnessLevel(0);
         SetDistanceLevel(0);
-        SetRangeLevel(0); 
+        SetRangeLevel(0);
+
+        LampLight = 1 << 10;
     }
     public void Raise()
     {
         gameObject.SetActive(true);
         TurnOn(false);
+        Debug.Log("끄기");
     }
     public void Lower()
     {
@@ -46,12 +54,13 @@ public class Flashlight : MonoBehaviour
     }
     public void TurnOn(bool b)
     {
+        Debug.Log("키기");
         IsOn = b;
         if (b)
         {
             //gameObject.SetActive(true);
             light.SetActive(true);
-            InvokeRepeating("Attack", attackDelay, attackDelay);
+            //InvokeRepeating("Attack", attackDelay, attackDelay);
         }
         else
         {
@@ -62,18 +71,23 @@ public class Flashlight : MonoBehaviour
     }
     private void Attack()
     {
+        Debug.Log($"Attack()  {monsters.Count}마리");
         if (!IsOn)
+        {
+
+            Debug.Log("꺼져있음" );
             return;
+        }
         Vector3 thisPos = Camera.main.transform.position; 
         List<Transform> deadMonsters = new List<Transform>();
         foreach (var m in monsters)
         { 
-            if( m ==null ) continue;
+            if( m ==null ||m.GetComponent<Entity>()==null) continue;
             Debug.Log(m.name);
             float distanceToTarget = Vector3.Distance(transform.position, m.transform.position);
             float ratio = Mathf.Clamp01((distance - distanceToTarget) / distance);
-            int damageAmount = Mathf.RoundToInt(ratio * brightness);
-
+            int damageAmount = Mathf.RoundToInt(ratio * brightness)+1;
+            Debug.Log($"공격 {monsters.Count}마리에게 {damageAmount}데미지  ");
             // 공격 후, 죽었으면 삭제
             if (m.GetComponent<Entity>().Attacked(damageAmount))
                 deadMonsters.Add(m);
@@ -175,13 +189,43 @@ public class Flashlight : MonoBehaviour
             GameManager.Instance.lanternTrf.GetComponent<Lantern>().CanvasSetActive(false);
 
         }
+    } 
+    private IEnumerator CheckLookAtLamp(StreetLamp lamp)
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(1f);
+            lamp.Charging(); 
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.layer);
+        if (1<<other.gameObject.layer == (int)LampLight)
+        {
+            lookatCo = StartCoroutine(CheckLookAtLamp(other.transform.parent.GetComponent<StreetLamp>()));
+            return;
+        }
+        bool StartAttack=false;
+        if(monsters.Count == 0) { StartAttack = true; }
+        Debug.Log($"{other.name}이 enter");
         monsters.Add(other.transform);
+        if(StartAttack)
+            InvokeRepeating("Attack", attackDelay, attackDelay);
     }
     private void OnTriggerExit(Collider other)
     {
+        if (1 << other.gameObject.layer == (int)LampLight)
+        {
+            if(lookatCo!=null)
+                StopCoroutine(lookatCo);
+            return;
+        }
+        Debug.Log($"{other.name}이 exit");
         monsters.Remove(other.transform);
+        if (monsters.Count <= 0)
+        {
+            CancelInvoke("Attack");
+        }
     }
 }

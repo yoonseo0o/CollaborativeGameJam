@@ -1068,7 +1068,7 @@ GameObject:
   - component: {fileID: 4532537377542069194}
   - component: {fileID: 52564932160904885}
   - component: {fileID: 8956335630421326001}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Monster3_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1141,6 +1141,7 @@ MonoBehaviour:
   attackDistance: 1
   target: {fileID: 0}
   animator: {fileID: 8956335630421326001}
+  collider: {fileID: 52564932160904885}
 --- !u!195 &4532537377542069194
 NavMeshAgent:
   m_ObjectHideFlags: 0

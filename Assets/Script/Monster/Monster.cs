@@ -28,8 +28,9 @@ public class Monster : MonoBehaviour, Entity
 
 
     [SerializeField ] private Animator animator;
+    [SerializeField] private Collider collider;
     Coroutine stanbyAttackCo;
-    static bool IsDead;
+    bool IsDead;
 
     void Awake()
     {
@@ -54,7 +55,6 @@ public class Monster : MonoBehaviour, Entity
     {
         if(stanbyAttackCo != null)
             StopCoroutine(stanbyAttackCo);
-        GameManager.Instance.MonsterManager.Remove(this);
     }
     void Update()
     {
@@ -98,8 +98,8 @@ public class Monster : MonoBehaviour, Entity
     }
     bool Entity.Attacked(int damageAmount)
     {
-        if (IsDead) return true;
-        hp -= damageAmount;
+        if (IsDead) { Debug.Log($"Á×¾îÀÖ´Âµ­ : {hp}"); return true; }
+        hp -= damageAmount; 
         if (hp<=0)
         {
             ((Entity)this).Dead(); 
@@ -110,7 +110,9 @@ public class Monster : MonoBehaviour, Entity
     }
     void Entity.Dead()
     {
+        collider.enabled = false;
         GameManager.Instance.PureSystem.GetPure(pureValue);
+        GameManager.Instance.MonsterManager.Remove(this);
         Destroy(gameObject);
     }
     public void TargetSelection()

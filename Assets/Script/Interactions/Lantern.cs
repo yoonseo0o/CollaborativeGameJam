@@ -43,6 +43,7 @@ public class Lantern : MonoBehaviour, Entity, Interaction
     }
     void Interaction.interaction()
     {
+        Debug.Log("상호작용 호출 하긴 했음");
         // 강화창 출력
         CanvasSetActive(true);
     }
