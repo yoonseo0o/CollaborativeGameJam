@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 using UnityEngine.UIElements; 
 public enum MonsterType { walk,creep }; 
 public class Monster : MonoBehaviour, Entity
@@ -29,6 +30,7 @@ public class Monster : MonoBehaviour, Entity
 
     [SerializeField ] private Animator animator;
     [SerializeField] private Collider collider;
+    [SerializeField] private AudioSource audioSource;
     Coroutine stanbyAttackCo;
     bool IsDead;
 
@@ -224,19 +226,24 @@ public class Monster : MonoBehaviour, Entity
     }
     private void moveToTarget()
     {
-        if (IsAttack) {  
+        if (IsAttack)
+        {
+            audioSource.Pause();
             agent.SetDestination(transform.position); 
             return; }
         if (target == null)
-        { 
+        {
+            audioSource.Pause();
             agent.SetDestination(transform.position);
         }
         else if (agent.destination != target.transform.position)
         { 
+            if(!audioSource.isPlaying) audioSource.Play();
             agent.SetDestination(target.transform.position);
         }
         else
-        { 
+        {
+            audioSource.Pause();
             agent.SetDestination(transform.position);
         }
     }
